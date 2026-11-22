@@ -5,9 +5,13 @@ import type { Features } from './features.js';
 export const actionSchema = z.enum(['ALLOW', 'STEP_UP_VERIFICATION', 'BLOCK']);
 export type Action = z.infer<typeof actionSchema>;
 export type RiskPolicy = { challenge: number; block: number };
-export type Evidence = { id: string; points: number; detail: string; provenance: 'postgres_features' };
+export type Evidence = { id: string; points: number; detail: string; provenance: 'postgres_features' | 'verified_memory' };
+/** A verified attack pattern that the current session reproduces. See memory-policy.ts. */
+export type MemoryEvidence = { points: number; detail: string };
 
-export function scoreRisk(kind: FraudEvent['kind'], features: Features, policy: RiskPolicy, earlySession = false) {
+export function scoreRisk(
+  kind: FraudEvent['kind'], features: Features, policy: RiskPolicy, earlySession = false, memory?: MemoryEvidence,
+) {
   const evidence: Evidence[] = [];
   function add(condition: boolean, id: string, points: number, detail: string) {
     if (condition) evidence.push({ id, points, detail, provenance: 'postgres_features' });
@@ -44,17 +48,23 @@ export function scoreRisk(kind: FraudEvent['kind'], features: Features, policy: 
     add(payeeAfterRiskShift, 'sensitive_payee_transition', 12, 'New payee registration follows a reset or recent transfers during an independent timing shift');
   }
 
+  // Analyst-confirmed knowledge is the only memory allowed to change an action. Provisional
+  // observations never reach this function.
+  if (memory) evidence.push({ id: 'verified_pattern_match', points: memory.points, detail: memory.detail, provenance: 'verified_memory' });
+
   const score = Math.min(100, evidence.reduce((sum, item) => sum + item.points, 0));
   const hardBlock = (loginPressure && impossibleTravel && features.newDevice) ||
     (transfer && amountSpike && burst && freshPayee);
   const eligible = kind !== 'login_failed';
-  const block = eligible && hardBlock && score >= policy.block;
+  const memoryBlock = eligible && Boolean(memory);
+  const block = eligible && ((hardBlock && score >= policy.block) || memoryBlock);
   const needsInvestigation = eligible && !block && score >= policy.challenge;
 
   return {
-    score, evidence, thresholds: policy, hardBlock, needsInvestigation,
+    score, evidence, thresholds: policy, hardBlock, memoryBlock, needsInvestigation,
     preliminaryAction: (block ? 'BLOCK' : needsInvestigation ? 'STEP_UP_VERIFICATION' : 'ALLOW') as Action,
   };
 }
 
-export type RiskAssessment = ReturnType<typeof scoreRisk>;
+// Traces stored before the verified-pattern policy have no memoryBlock field.
+export type RiskAssessment = Omit<ReturnType<typeof scoreRisk>, 'memoryBlock'> & { memoryBlock?: boolean };

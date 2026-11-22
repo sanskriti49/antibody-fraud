@@ -145,3 +145,63 @@ Three matched extended-profile replays used 17 attempted events from one credent
 | Agents + hosted Meko | 5 | 1,941 / 558 | 107.825 s | 66.800 s | 2 | 0 |
 
 The first alert led the attempted login by 240 simulated seconds in each mode. The two step-up challenges passed, so the modeled account-access impact executed. This single episode had no actionable legitimate controls and no warmed reuse. The report records actual provider token usage and describes local inference cost under those conditions. [Cold smoke telemetry](../benchmarks/early-live-smoke-7403.json)
+
+## Memory that changes the decision
+
+Earlier sections show memory reducing agent work while the deterministic policy kept every action. In the held-out tape above, all 58 attacks were already alerted before impact under the extended rules. The 15 that executed were attackers who passed the step-up challenge, and only a block stops them. The [verified-pattern policy](DECISION_FLOW.md#verified-pattern-policy) lets an analyst-confirmed session pattern block a later session on another account that repeats its opening steps.
+
+The evaluator replays the same 1,999-event tape twice in fresh schemas: `MEMORY_POLICY=off` and `enforce`. With memory on, a simulated analyst confirms each attack's impact case 30 simulated minutes after impact. A pattern becomes usable only after the publication worker reads it back. A *first encounter* is an attack that started before any confirmed pattern of its type existed. Every other attack is a *repeat encounter*. Ground truth stays in the evaluator. Rules mode makes zero model calls in both runs.
+
+```bash
+npm run evaluate:early -- --events 1999 --memory compare
+npm run evaluate:early -- --events 1999 --memory compare --hard-negatives
+```
+
+### Default tape, seed 7403
+
+| Metric | Memory off | Verified-pattern policy |
+| --- | ---: | ---: |
+| Attacks with modeled impact prevented | 43 / 58 | 57 / 58 |
+| Prevented before the impact event | 43 | 52 |
+| Prevented by a block | 0 | 28 |
+| Attacks executed | 15 | 1 |
+| Repeat encounters executed | — | 0 / 54 |
+| First encounters executed | 15 / 58 | 1 / 4 |
+| Executed synthetic transfer harm (minor units) | 1,043,800 | 0 |
+| Legitimate events alerted (step-up or block) | 23 / 359 (6.41%) | 23 / 359 (6.41%) |
+| Legitimate events matched by a pattern | 0 | 0 |
+| Per-event latency p95 | 3.1 ms | 5.9 ms |
+
+The analyst sent 57 confirmations, which produced five distinct patterns: credential stuffing, takeover, coordinated, and two velocity variants with and without a transfer burst. The remaining attack executed in the first credential-stuffing episode, before any pattern existed. [Full run](../benchmarks/memory-policy-7403.json)
+
+### Hard negatives
+
+The default tape has no legitimate session that resembles an attack before money moves, so it cannot reveal a false block caused by memory. `--hard-negatives` adds `legitimate-recovery`: a customer on a new phone and network types differently, resets a forgotten password, adds a payee and sends a modest amount. Until the transfer it is identical to a takeover. In this mode the simulated analyst also corrects a pattern once when it changes a legitimate customer's action. The analyst requires the strongest harm indicator the attack had and the customer lacked.
+
+| Run (1,998–1,999 events, 52 attacks) | Executed, off → on | Repeat executed | Executed transfer harm, off → on | Legitimate alert rate, off → on | Legitimate events changed by memory |
+| --- | --- | ---: | --- | --- | ---: |
+| Seed 7403 | 14 → 1 | 0 / 48 | 880,000 → 0 | 15.18% → 15.45% | 2 |
+| Seed 1 | 10 → 1 | 0 / 48 | 556,600 → 59,400 | 14.51% → 14.78% | 2 |
+| Seed 2027 | 8 → 1 | 0 / 48 | 448,200 → 0 | 14.51% → 14.78% | 2 |
+| Seed 90210 | 7 → 0 | 0 / 48 | 485,000 → 0 | 14.96% → 15.22% | 2 |
+| Development split, seed 7403 | 10 → 1 | 0 / 48 | 467,000 → 64,600 | 14.51% → 14.78% | 2 |
+| Legacy rules profile, seed 7403 | 14 → 1 | 0 / 48 | 880,000 → 0 | 8.64% → 9.16% | 2 |
+
+In every run, the first recovering customer was blocked at the password reset and again at the payee step by the takeover pattern. The analyst's correction required `amount_spike`. Version 2 then matched later takeovers only at the transfer, where they were still blocked, and no later customer matched. The added legitimate alert in each run is that first customer. The rules already challenge most recovery sessions because they combine a new device with shifted typing. [Seed 7403 run](../benchmarks/memory-policy-hard-negatives-7403.json) [Sweep summary](../benchmarks/memory-policy-sweep.json)
+
+### Hosted Meko rerun
+
+The seed-7403 hard-negative run was repeated on 22 November 2026 with `--memory-store meko`, so every pattern was written to the hosted confirmed datapack and read back by exact ID before use. The results matched the local stand-in exactly:
+- Executed attacks fell from 14 to 1, and repeat encounters executed 0 of 48.
+- Executed transfer harm fell from 880,000 to 0.
+- The legitimate alert rate went from 15.18% to 15.45%, with 2 legitimate events changed before one correction.
+
+The 52 confirmations produced 6 hosted writes: 5 patterns and 1 corrected version. The rest corroborated existing patterns. The run took 31 seconds, and per-event p95 latency was 6 ms, because the policy reads the local verified mirror rather than calling Meko per event. [Hosted run](../benchmarks/memory-policy-hosted-meko-7403.json)
+
+### Limits
+
+- **Easy repeats.** Synthetic repeats come from one template per attack type with small variations in timing, location, amount and burst size. This makes repeat recognition easy. Real attackers vary their steps, so these figures show the mechanism, not field accuracy.
+- **Store.** The sweep used the local in-process stand-in (`src/integrations/local-memory.ts`), which has the same write and exact-ID read-back contract. The seed-7403 hard-negative run was also repeated on hosted Meko with identical results (above).
+- **Simulated analyst.** It confirms every attack and corrects mistakes perfectly after 30 simulated minutes. Slower, partial or wrong feedback would reduce the benefit and could add false blocks.
+- **Strict blocking.** A pattern blocks on a two-step match. A narrower opening, such as a single risky login followed by a reset, would also catch legitimate recoveries until corrected. One hard-negative family is a small sample.
+- **Coverage.** Agent and Meko modes were not part of this sweep because no model provider was configured. The policy runs before agents in every mode, and a memory block makes no model call.

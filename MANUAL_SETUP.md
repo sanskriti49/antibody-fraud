@@ -150,6 +150,34 @@ LLM_PROVIDER=ollama OLLAMA_MODEL=qwen2.5:3b LLM_TIMEOUT_MS=60000 \
 
 The replay reports an alert as a step-up or a block. Its offline gate counts prevented synthetic impact only if an explicit block or a failed challenge prevents the intended operation. Use `--suite development --seed 23` when changing the rules. Keep evaluation seeds separate when assessing changes.
 
-## 6. Hackathon registration and submission
+## 6. Playbooks and the analyst workspace
+
+1. Load the approved playbooks into the configured confirmed pack's knowledge base. The command waits until Meko reports each document `completed`.
+
+   ```bash
+   npm run playbooks:sync -- --probe "account takeover password reset"
+   ```
+
+   Without Meko keys, the playbooks stay in the local registry, and cases still list them.
+2. Build the workspace once.
+
+   ```bash
+   npm run web:install
+   ```
+
+   ```bash
+   npm run web:build
+   ```
+
+3. Set `MEMORY_POLICY=enforce` in `.env`, then start the API with `npm run dev` and open http://127.0.0.1:3001. Without keys, also set `MEMORY_STORE=local`. That in-process stand-in is labelled in the UI and is not valid with `INVESTIGATION_MODE=meko`.
+4. In a second terminal, stream a synthetic tape. Remove `--auto-analyst` to confirm cases yourself from the review queue.
+
+   ```bash
+   npm run demo:feed -- --auto-analyst --rate 6
+   ```
+
+   Use a new `--seed` for each run, because a replayed seed returns stored decisions.
+
+## 7. Hackathon registration and submission
 
 The organizer requires registration and a submission through the [ContextCon event page](https://www.hackerearth.com/lp/challenges/contextcon). Registration asks for name, email, company and profile links. The FAQ allows individuals aged 18+ worldwide and teams up to four. Registration is free. No app environment variable is involved. Verify registration using the event confirmation after signing in. Prepare a public GitHub repository with setup instructions and a recorded demo under five minutes once the collective-learning milestone is verified. See [Hackathon strategy](docs/HACKATHON_STRATEGY.md) for the deadline and deliverables.

@@ -21,7 +21,12 @@
     "demo:learn": "node --env-file-if-exists=.env --import tsx src/scripts/learn-demo.ts",
     "demo:signals": "node --env-file-if-exists=.env --import tsx src/scripts/demo-signals.ts",
     "evaluate:ranked": "node --env-file-if-exists=.env --import tsx src/scripts/evaluate-ranked.ts",
-    "evaluate:early": "node --env-file-if-exists=.env --import tsx src/scripts/evaluate-early.ts"
+    "evaluate:early": "node --env-file-if-exists=.env --import tsx src/scripts/evaluate-early.ts",
+    "playbooks:sync": "node --env-file-if-exists=.env --import tsx src/scripts/playbooks-sync.ts",
+    "demo:feed": "node --env-file-if-exists=.env --import tsx src/scripts/demo-feed.ts",
+    "web:install": "npm --prefix web ci",
+    "web:dev": "npm --prefix web run dev",
+    "web:build": "npm --prefix web run build"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.29.0",

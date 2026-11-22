@@ -1,0 +1,5710 @@
+{
+  "corpus": {
+    "split": "evaluation",
+    "seed": 7403,
+    "requestedMaxEvents": 1999,
+    "scenario": "all",
+    "hardNegatives": false
+  },
+  "runs": [
+    {
+      "mode": "rules",
+      "profile": "extended",
+      "memoryPolicy": "off",
+      "schema": "contextcon_eval_d2825b5e829ad331_rules_off",
+      "provider": null,
+      "model": null,
+      "retrievalScope": "disabled",
+      "memoryStore": null,
+      "analyst": null,
+      "policyThresholds": {
+        "challenge": 25,
+        "block": 72
+      },
+      "wallMs": 7621,
+      "roleMix": {},
+      "interventionSemantics": "Identical attempted events are shadow-replayed. In a separate effect ledger, a BLOCK or failed synthetic challenge holds that account/session; a passed challenge permits the attempt. An earlier hold can prevent a later impact only in that same session. These outcomes are simulated, not counterfactual engine retraining.",
+      "classificationSemantics": "Unweighted event-level TP/FP/TN/FN for recommendations. BLOCK or STEP_UP_VERIFICATION is positive, including when a challenge passes. Malicious episode action and impact rows are ground-truth positives. Warmup and failed-authentication observation rows are excluded.",
+      "eventCount": 1999,
+      "warmupExcluded": 1280,
+      "failedAuthObservationsExcluded": 65,
+      "actionCounts": {
+        "ALLOW": 487,
+        "STEP_UP_VERIFICATION": 167,
+        "BLOCK": 0
+      },
+      "simulatedGates": {
+        "challengePassed": 62,
+        "challengeFailed": 43,
+        "directBlock": 0,
+        "precludedAttempts": 71
+      },
+      "classification": {
+        "tp": 144,
+        "fp": 23,
+        "tn": 336,
+        "fn": 151,
+        "precision": 0.8622754491017964,
+        "recall": 0.488135593220339,
+        "f1": 0.6233766233766234,
+        "falsePositiveRate": 0.06406685236768803,
+        "falseNegativeRate": 0.511864406779661
+      },
+      "byScenario": {
+        "credential-stuffing": {
+          "episodes": 15,
+          "classification": {
+            "tp": 30,
+            "fp": 0,
+            "tn": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "f1": 1,
+            "falsePositiveRate": null,
+            "falseNegativeRate": 0
+          },
+          "attacksAlertedBeforeImpact": 15,
+          "attacksPrevented": 14
+        },
+        "velocity": {
+          "episodes": 15,
+          "classification": {
+            "tp": 30,
+            "fp": 0,
+            "tn": 0,
+            "fn": 53,
+            "precision": 1,
+            "recall": 0.3614457831325301,
+            "f1": 0.5309734513274337,
+            "falsePositiveRate": null,
+            "falseNegativeRate": 0.6385542168674698
+          },
+          "attacksAlertedBeforeImpact": 15,
+          "attacksPrevented": 10
+        },
+        "takeover": {
+          "episodes": 14,
+          "classification": {
+            "tp": 42,
+            "fp": 0,
+            "tn": 0,
+            "fn": 14,
+            "precision": 1,
+            "recall": 0.75,
+            "f1": 0.8571428571428571,
+            "falsePositiveRate": null,
+            "falseNegativeRate": 0.25
+          },
+          "attacksAlertedBeforeImpact": 14,
+          "attacksPrevented": 9
+        },
+        "coordinated": {
+          "episodes": 14,
+          "classification": {
+            "tp": 42,
+            "fp": 0,
+            "tn": 0,
+            "fn": 84,
+            "precision": 1,
+            "recall": 0.3333333333333333,
+            "f1": 0.5,
+            "falsePositiveRate": null,
+            "falseNegativeRate": 0.6666666666666666
+          },
+          "attacksAlertedBeforeImpact": 14,
+          "attacksPrevented": 10
+        },
+        "ordinary": {
+          "episodes": 14,
+          "classification": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 28,
+            "fn": 0,
+            "precision": null,
+            "recall": null,
+            "f1": null,
+            "falsePositiveRate": 0,
+            "falseNegativeRate": null
+          },
+          "attacksAlertedBeforeImpact": 0,
+          "attacksPrevented": 0
+        },
+        "legitimate-travel": {
+          "episodes": 14,
+          "classification": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 28,
+            "fn": 0,
+            "precision": null,
+            "recall": null,
+            "f1": null,
+            "falsePositiveRate": 0,
+            "falseNegativeRate": null
+          },
+          "attacksAlertedBeforeImpact": 0,
+          "attacksPrevented": 0
+        },
+        "shared-household": {
+          "episodes": 14,
+          "classification": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 112,
+            "fn": 0,
+            "precision": null,
+            "recall": null,
+            "f1": null,
+            "falsePositiveRate": 0,
+            "falseNegativeRate": null
+          },
+          "attacksAlertedBeforeImpact": 0,
+          "attacksPrevented": 0
+        },
+        "shared-office": {
+          "episodes": 14,
+          "classification": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 112,
+            "fn": 0,
+            "precision": null,
+            "recall": null,
+            "f1": null,
+            "falsePositiveRate": 0,
+            "falseNegativeRate": null
+          },
+          "attacksAlertedBeforeImpact": 0,
+          "attacksPrevented": 0
+        },
+        "legitimate-burst": {
+          "episodes": 14,
+          "classification": {
+            "tp": 0,
+            "fp": 23,
+            "tn": 56,
+            "fn": 0,
+            "precision": 0,
+            "recall": null,
+            "f1": 0,
+            "falsePositiveRate": 0.2911392405063291,
+            "falseNegativeRate": null
+          },
+          "attacksAlertedBeforeImpact": 0,
+          "attacksPrevented": 0
+        }
+      },
+      "legitimateStepUpRate": 0.06406685236768803,
+      "legitimateActionableEvents": 359,
+      "attacks": {
+        "total": 58,
+        "alertedBeforeImpact": 58,
+        "alertLeadSeconds": {
+          "p50": 270,
+          "p95": 540
+        },
+        "alertLeadSteps": {
+          "p50": 1,
+          "p95": 3
+        },
+        "preventedBeforeImpact": 43,
+        "preventedAtImpact": 0,
+        "preventedByBlock": 0,
+        "preventedByFailedChallenge": 43,
+        "executed": 15,
+        "byImpactKind": {
+          "account_access": {
+            "total": 15,
+            "alertedBeforeImpact": 15,
+            "prevented": 14
+          },
+          "transfer": {
+            "total": 43,
+            "alertedBeforeImpact": 43,
+            "prevented": 29
+          }
+        },
+        "simulatedTransferHarmPreventedMinor": 2219000,
+        "simulatedTransferHarmExecutedMinor": 1043800,
+        "byEncounter": {
+          "first": {
+            "total": 58,
+            "prevented": 43,
+            "preventedBeforeImpact": 43,
+            "preventedByBlock": 0,
+            "executed": 15,
+            "executedHarmMinor": 1043800
+          },
+          "repeat": {
+            "total": 0,
+            "prevented": 0,
+            "preventedBeforeImpact": 0,
+            "preventedByBlock": 0,
+            "executed": 0,
+            "executedHarmMinor": 0
+          }
+        }
+      },
+      "telemetry": {
+        "totalCalls": 0,
+        "measuredUsageCalls": 0,
+        "inputTokens": 0,
+        "outputTokens": 0,
+        "latencyMs": {
+          "p50": 2.097005000000536,
+          "p95": 3.11039399999936
+        },
+        "casesWithVerifiedFingerprintReuse": 0,
+        "casesWithEarlierPublishedObservations": 0,
+        "rankedSearches": 0,
+        "rankedHits": 0,
+        "rejectedCandidates": 0,
+        "verifiedPatternMatches": 0,
+        "verifiedPatternMatchesOnLegitimate": 0,
+        "verifiedPatternActionChanges": 0
+      },
+      "episodes": [
+        {
+          "episodeId": "ep-8311b96bc1e5ee3ec553d237",
+          "scenario": "credential-stuffing",
+          "attackEpisode": true,
+          "impactKind": "account_access",
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": 240,
+          "alertLeadSteps": 1,
+          "impactOutcome": "executed",
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": "first",
+          "counts": {
+            "tp": 2,
+            "fp": 0,
+            "tn": 0,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-49a308b1651811a33f4c5628",
+          "scenario": "velocity",
+          "attackEpisode": true,
+          "impactKind": "transfer",
+          "challengeOutcomeIfRequested": "fail",
+          "alertLeadSeconds": 270,
+          "alertLeadSteps": 1,
+          "impactOutcome": "prevented",
+          "intervention": {
+            "type": "challenge_failed",
+            "stage": "before_impact"
+          },
+          "intendedTransferMinor": 84000,
+          "encounter": "first",
+          "counts": {
+            "tp": 2,
+            "fp": 0,
+            "tn": 0,
+            "fn": 4
+          }
+        },
+        {
+          "episodeId": "ep-53a2865da16430c6990cf94f",
+          "scenario": "takeover",
+          "attackEpisode": true,
+          "impactKind": "transfer",
+          "challengeOutcomeIfRequested": "fail",
+          "alertLeadSeconds": 540,
+          "alertLeadSteps": 3,
+          "impactOutcome": "prevented",
+          "intervention": {
+            "type": "challenge_failed",
+            "stage": "before_impact"
+          },
+          "intendedTransferMinor": 97200,
+          "encounter": "first",
+          "counts": {
+            "tp": 3,
+            "fp": 0,
+            "tn": 0,
+            "fn": 1
+          }
+        },
+        {
+          "episodeId": "ep-a2e4a49c41dc53974f42c769",
+          "scenario": "coordinated",
+          "attackEpisode": true,
+          "impactKind": "transfer",
+          "challengeOutcomeIfRequested": "fail",
+          "alertLeadSeconds": 420,
+          "alertLeadSteps": 2,
+          "impactOutcome": "prevented",
+          "intervention": {
+            "type": "challenge_failed",
+            "stage": "before_impact"
+          },
+          "intendedTransferMinor": 95600,
+          "encounter": "first",
+          "counts": {
+            "tp": 3,
+            "fp": 0,
+            "tn": 0,
+            "fn": 6
+          }
+        },
+        {
+          "episodeId": "ep-79663d0df6b6e5fa99be7f55",
+          "scenario": "ordinary",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 2,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-6a5041cd3c51552f956fcd46",
+          "scenario": "legitimate-travel",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 2,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-c5cbbca1fc3c96bdd5bdc24f",
+          "scenario": "shared-household",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 8,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-3319a076afb591c6ac226ddf",
+          "scenario": "shared-office",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 8,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-3a42cc16bad638555725204d",
+          "scenario": "legitimate-burst",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 2,
+            "tn": 4,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-abda7f224df63a70f17ce242",
+          "scenario": "credential-stuffing",
+          "attackEpisode": true,
+          "impactKind": "account_access",
+          "challengeOutcomeIfRequested": "fail",
+          "alertLeadSeconds": 240,
+          "alertLeadSteps": 1,
+          "impactOutcome": "prevented",
+          "intervention": {
+            "type": "challenge_failed",
+            "stage": "before_impact"
+          },
+          "intendedTransferMinor": 0,
+          "encounter": "first",
+          "counts": {
+            "tp": 2,
+            "fp": 0,
+            "tn": 0,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-3a3d458db4f45269dd4eef03",
+          "scenario": "velocity",
+          "attackEpisode": true,
+          "impactKind": "transfer",
+          "challengeOutcomeIfRequested": "fail",
+          "alertLeadSeconds": 270,
+          "alertLeadSteps": 1,
+          "impactOutcome": "prevented",
+          "intervention": {
+            "type": "challenge_failed",
+            "stage": "before_impact"
+          },
+          "intendedTransferMinor": 93000,
+          "encounter": "first",
+          "counts": {
+            "tp": 2,
+            "fp": 0,
+            "tn": 0,
+            "fn": 3
+          }
+        },
+        {
+          "episodeId": "ep-53af3f64855a7f43ebc08292",
+          "scenario": "takeover",
+          "attackEpisode": true,
+          "impactKind": "transfer",
+          "challengeOutcomeIfRequested": "fail",
+          "alertLeadSeconds": 540,
+          "alertLeadSteps": 3,
+          "impactOutcome": "prevented",
+          "intervention": {
+            "type": "challenge_failed",
+            "stage": "before_impact"
+          },
+          "intendedTransferMinor": 66600,
+          "encounter": "first",
+          "counts": {
+            "tp": 3,
+            "fp": 0,
+            "tn": 0,
+            "fn": 1
+          }
+        },
+        {
+          "episodeId": "ep-ddde13a9bcca19e8427d3cc5",
+          "scenario": "coordinated",
+          "attackEpisode": true,
+          "impactKind": "transfer",
+          "challengeOutcomeIfRequested": "fail",
+          "alertLeadSeconds": 420,
+          "alertLeadSteps": 2,
+          "impactOutcome": "prevented",
+          "intervention": {
+            "type": "challenge_failed",
+            "stage": "before_impact"
+          },
+          "intendedTransferMinor": 65800,
+          "encounter": "first",
+          "counts": {
+            "tp": 3,
+            "fp": 0,
+            "tn": 0,
+            "fn": 6
+          }
+        },
+        {
+          "episodeId": "ep-0d4d77d01907a5c0d1dbafa9",
+          "scenario": "ordinary",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 2,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-e2521e927452229fa2f73d46",
+          "scenario": "legitimate-travel",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 2,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-d07b00fad18839f9410de929",
+          "scenario": "shared-household",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 8,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-d095495b5c6ffb494c488cc0",
+          "scenario": "shared-office",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 8,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-ed02cb7f8187c83129188c13",
+          "scenario": "legitimate-burst",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 2,
+            "tn": 4,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-d2bae9ee13a1a637cf534fb5",
+          "scenario": "credential-stuffing",
+          "attackEpisode": true,
+          "impactKind": "account_access",
+          "challengeOutcomeIfRequested": "fail",
+          "alertLeadSeconds": 240,
+          "alertLeadSteps": 1,
+          "impactOutcome": "prevented",
+          "intervention": {
+            "type": "challenge_failed",
+            "stage": "before_impact"
+          },
+          "intendedTransferMinor": 0,
+          "encounter": "first",
+          "counts": {
+            "tp": 2,
+            "fp": 0,
+            "tn": 0,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-12955811652be7d3fd9448b8",
+          "scenario": "velocity",
+          "attackEpisode": true,
+          "impactKind": "transfer",
+          "challengeOutcomeIfRequested": "fail",
+          "alertLeadSeconds": 270,
+          "alertLeadSteps": 1,
+          "impactOutcome": "prevented",
+          "intervention": {
+            "type": "challenge_failed",
+            "stage": "before_impact"
+          },
+          "intendedTransferMinor": 83600,
+          "encounter": "first",
+          "counts": {
+            "tp": 2,
+            "fp": 0,
+            "tn": 0,
+            "fn": 4
+          }
+        },
+        {
+          "episodeId": "ep-0203cfc6b741e81fa44d7ca2",
+          "scenario": "takeover",
+          "attackEpisode": true,
+          "impactKind": "transfer",
+          "challengeOutcomeIfRequested": "fail",
+          "alertLeadSeconds": 540,
+          "alertLeadSteps": 3,
+          "impactOutcome": "prevented",
+          "intervention": {
+            "type": "challenge_failed",
+            "stage": "before_impact"
+          },
+          "intendedTransferMinor": 55000,
+          "encounter": "first",
+          "counts": {
+            "tp": 3,
+            "fp": 0,
+            "tn": 0,
+            "fn": 1
+          }
+        },
+        {
+          "episodeId": "ep-e898d9574d74e99cd3cf4f7c",
+          "scenario": "coordinated",
+          "attackEpisode": true,
+          "impactKind": "transfer",
+          "challengeOutcomeIfRequested": "fail",
+          "alertLeadSeconds": 420,
+          "alertLeadSteps": 2,
+          "impactOutcome": "prevented",
+          "intervention": {
+            "type": "challenge_failed",
+            "stage": "before_impact"
+          },
+          "intendedTransferMinor": 79200,
+          "encounter": "first",
+          "counts": {
+            "tp": 3,
+            "fp": 0,
+            "tn": 0,
+            "fn": 6
+          }
+        },
+        {
+          "episodeId": "ep-802b56a5806084afabb78c74",
+          "scenario": "ordinary",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 2,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-b62c05c3e38cab7824d18440",
+          "scenario": "legitimate-travel",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 2,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-4e8ff3dd88ac57364d15728a",
+          "scenario": "shared-household",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 8,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-c2162271a5688983374db4e8",
+          "scenario": "shared-office",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 8,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-f3e21c373f46d21a40a15571",
+          "scenario": "legitimate-burst",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 2,
+            "tn": 4,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-28a7ff8e64580867096c4ffc",
+          "scenario": "credential-stuffing",
+          "attackEpisode": true,
+          "impactKind": "account_access",
+          "challengeOutcomeIfRequested": "fail",
+          "alertLeadSeconds": 240,
+          "alertLeadSteps": 1,
+          "impactOutcome": "prevented",
+          "intervention": {
+            "type": "challenge_failed",
+            "stage": "before_impact"
+          },
+          "intendedTransferMinor": 0,
+          "encounter": "first",
+          "counts": {
+            "tp": 2,
+            "fp": 0,
+            "tn": 0,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-d79b6c6e602f51a62d64d13d",
+          "scenario": "velocity",
+          "attackEpisode": true,
+          "impactKind": "transfer",
+          "challengeOutcomeIfRequested": "fail",
+          "alertLeadSeconds": 270,
+          "alertLeadSteps": 1,
+          "impactOutcome": "prevented",
+          "intervention": {
+            "type": "challenge_failed",
+            "stage": "before_impact"
+          },
+          "intendedTransferMinor": 52400,
+          "encounter": "first",
+          "counts": {
+            "tp": 2,
+            "fp": 0,
+            "tn": 0,
+            "fn": 3
+          }
+        },
+        {
+          "episodeId": "ep-74e24d3517231ec18a083f17",
+          "scenario": "takeover",
+          "attackEpisode": true,
+          "impactKind": "transfer",
+          "challengeOutcomeIfRequested": "fail",
+          "alertLeadSeconds": 540,
+          "alertLeadSteps": 3,
+          "impactOutcome": "prevented",
+          "intervention": {
+            "type": "challenge_failed",
+            "stage": "before_impact"
+          },
+          "intendedTransferMinor": 52400,
+          "encounter": "first",
+          "counts": {
+            "tp": 3,
+            "fp": 0,
+            "tn": 0,
+            "fn": 1
+          }
+        },
+        {
+          "episodeId": "ep-30e41f8438005d9b24e45735",
+          "scenario": "coordinated",
+          "attackEpisode": true,
+          "impactKind": "transfer",
+          "challengeOutcomeIfRequested": "fail",
+          "alertLeadSeconds": 420,
+          "alertLeadSteps": 2,
+          "impactOutcome": "prevented",
+          "intervention": {
+            "type": "challenge_failed",
+            "stage": "before_impact"
+          },
+          "intendedTransferMinor": 88800,
+          "encounter": "first",
+          "counts": {
+            "tp": 3,
+            "fp": 0,
+            "tn": 0,
+            "fn": 6
+          }
+        },
+        {
+          "episodeId": "ep-53b3684143e1d01fe9ed50b0",
+          "scenario": "ordinary",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 2,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-f418bbceaaee624f9d7877aa",
+          "scenario": "legitimate-travel",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 2,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-7c4c0d6d59b7d9afce14646c",
+          "scenario": "shared-household",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 8,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-a80bb5fced477cb65a8c442c",
+          "scenario": "shared-office",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 8,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-0f0961776d709d51599566dd",
+          "scenario": "legitimate-burst",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 2,
+            "tn": 4,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-969c51b1235141ff0bcda170",
+          "scenario": "credential-stuffing",
+          "attackEpisode": true,
+          "impactKind": "account_access",
+          "challengeOutcomeIfRequested": "fail",
+          "alertLeadSeconds": 240,
+          "alertLeadSteps": 1,
+          "impactOutcome": "prevented",
+          "intervention": {
+            "type": "challenge_failed",
+            "stage": "before_impact"
+          },
+          "intendedTransferMinor": 0,
+          "encounter": "first",
+          "counts": {
+            "tp": 2,
+            "fp": 0,
+            "tn": 0,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-34406a6f496a8546a4dd828d",
+          "scenario": "velocity",
+          "attackEpisode": true,
+          "impactKind": "transfer",
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": 270,
+          "alertLeadSteps": 1,
+          "impactOutcome": "executed",
+          "intervention": null,
+          "intendedTransferMinor": 88000,
+          "encounter": "first",
+          "counts": {
+            "tp": 2,
+            "fp": 0,
+            "tn": 0,
+            "fn": 4
+          }
+        },
+        {
+          "episodeId": "ep-a5a3cafada1005edbac72ea3",
+          "scenario": "takeover",
+          "attackEpisode": true,
+          "impactKind": "transfer",
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": 540,
+          "alertLeadSteps": 3,
+          "impactOutcome": "executed",
+          "intervention": null,
+          "intendedTransferMinor": 90400,
+          "encounter": "first",
+          "counts": {
+            "tp": 3,
+            "fp": 0,
+            "tn": 0,
+            "fn": 1
+          }
+        },
+        {
+          "episodeId": "ep-4c7d47600d1995ab7e049e80",
+          "scenario": "coordinated",
+          "attackEpisode": true,
+          "impactKind": "transfer",
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": 420,
+          "alertLeadSteps": 2,
+          "impactOutcome": "executed",
+          "intervention": null,
+          "intendedTransferMinor": 89400,
+          "encounter": "first",
+          "counts": {
+            "tp": 3,
+            "fp": 0,
+            "tn": 0,
+            "fn": 6
+          }
+        },
+        {
+          "episodeId": "ep-0120aa076f65d91ff48b9ee7",
+          "scenario": "ordinary",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 2,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-b4c75d58ce615c8a31e091b6",
+          "scenario": "legitimate-travel",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 2,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-c9b9f779539bd79992b5204a",
+          "scenario": "shared-household",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 8,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-24b6a1703472db49a2df5cac",
+          "scenario": "shared-office",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 8,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-58a2fcbc5da63cd3fcbaacd8",
+          "scenario": "legitimate-burst",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 1,
+            "tn": 4,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-9929c685e911d2fa8fd1692c",
+          "scenario": "credential-stuffing",
+          "attackEpisode": true,
+          "impactKind": "account_access",
+          "challengeOutcomeIfRequested": "fail",
+          "alertLeadSeconds": 240,
+          "alertLeadSteps": 1,
+          "impactOutcome": "prevented",
+          "intervention": {
+            "type": "challenge_failed",
+            "stage": "before_impact"
+          },
+          "intendedTransferMinor": 0,
+          "encounter": "first",
+          "counts": {
+            "tp": 2,
+            "fp": 0,
+            "tn": 0,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-6771969419de1fdd601d08db",
+          "scenario": "velocity",
+          "attackEpisode": true,
+          "impactKind": "transfer",
+          "challengeOutcomeIfRequested": "fail",
+          "alertLeadSeconds": 270,
+          "alertLeadSteps": 1,
+          "impactOutcome": "prevented",
+          "intervention": {
+            "type": "challenge_failed",
+            "stage": "before_impact"
+          },
+          "intendedTransferMinor": 90800,
+          "encounter": "first",
+          "counts": {
+            "tp": 2,
+            "fp": 0,
+            "tn": 0,
+            "fn": 3
+          }
+        },
+        {
+          "episodeId": "ep-bbe56f0368d3292bc420d825",
+          "scenario": "takeover",
+          "attackEpisode": true,
+          "impactKind": "transfer",
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": 540,
+          "alertLeadSteps": 3,
+          "impactOutcome": "executed",
+          "intervention": null,
+          "intendedTransferMinor": 100200,
+          "encounter": "first",
+          "counts": {
+            "tp": 3,
+            "fp": 0,
+            "tn": 0,
+            "fn": 1
+          }
+        },
+        {
+          "episodeId": "ep-e4e2142089bd5eb5213a932c",
+          "scenario": "coordinated",
+          "attackEpisode": true,
+          "impactKind": "transfer",
+          "challengeOutcomeIfRequested": "fail",
+          "alertLeadSeconds": 420,
+          "alertLeadSteps": 2,
+          "impactOutcome": "prevented",
+          "intervention": {
+            "type": "challenge_failed",
+            "stage": "before_impact"
+          },
+          "intendedTransferMinor": 62400,
+          "encounter": "first",
+          "counts": {
+            "tp": 3,
+            "fp": 0,
+            "tn": 0,
+            "fn": 6
+          }
+        },
+        {
+          "episodeId": "ep-95d959ee79dd5ec21c894005",
+          "scenario": "ordinary",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 2,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-198b7609a84ea7d78803ac16",
+          "scenario": "legitimate-travel",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 2,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-67926d7e83a004a415faf19d",
+          "scenario": "shared-household",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 8,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-c0987a43d2f2336e78253c0d",
+          "scenario": "shared-office",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 8,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-027f9b1af850af088dd63b24",
+          "scenario": "legitimate-burst",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 1,
+            "tn": 4,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-998cde21a84519833322bbe8",
+          "scenario": "credential-stuffing",
+          "attackEpisode": true,
+          "impactKind": "account_access",
+          "challengeOutcomeIfRequested": "fail",
+          "alertLeadSeconds": 240,
+          "alertLeadSteps": 1,
+          "impactOutcome": "prevented",
+          "intervention": {
+            "type": "challenge_failed",
+            "stage": "before_impact"
+          },
+          "intendedTransferMinor": 0,
+          "encounter": "first",
+          "counts": {
+            "tp": 2,
+            "fp": 0,
+            "tn": 0,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-0222a1e8322cf382ff219569",
+          "scenario": "velocity",
+          "attackEpisode": true,
+          "impactKind": "transfer",
+          "challengeOutcomeIfRequested": "fail",
+          "alertLeadSeconds": 270,
+          "alertLeadSteps": 1,
+          "impactOutcome": "prevented",
+          "intervention": {
+            "type": "challenge_failed",
+            "stage": "before_impact"
+          },
+          "intendedTransferMinor": 73000,
+          "encounter": "first",
+          "counts": {
+            "tp": 2,
+            "fp": 0,
+            "tn": 0,
+            "fn": 3
+          }
+        },
+        {
+          "episodeId": "ep-9434ac8d5540f2f2cd21d5eb",
+          "scenario": "takeover",
+          "attackEpisode": true,
+          "impactKind": "transfer",
+          "challengeOutcomeIfRequested": "fail",
+          "alertLeadSeconds": 540,
+          "alertLeadSteps": 3,
+          "impactOutcome": "prevented",
+          "intervention": {
+            "type": "challenge_failed",
+            "stage": "before_impact"
+          },
+          "intendedTransferMinor": 75400,
+          "encounter": "first",
+          "counts": {
+            "tp": 3,
+            "fp": 0,
+            "tn": 0,
+            "fn": 1
+          }
+        },
+        {
+          "episodeId": "ep-a560e51964ed191210acf615",
+          "scenario": "coordinated",
+          "attackEpisode": true,
+          "impactKind": "transfer",
+          "challengeOutcomeIfRequested": "fail",
+          "alertLeadSeconds": 420,
+          "alertLeadSteps": 2,
+          "impactOutcome": "prevented",
+          "intervention": {
+            "type": "challenge_failed",
+            "stage": "before_impact"
+          },
+          "intendedTransferMinor": 93600,
+          "encounter": "first",
+          "counts": {
+            "tp": 3,
+            "fp": 0,
+            "tn": 0,
+            "fn": 6
+          }
+        },
+        {
+          "episodeId": "ep-97f23b90fa6c30dd510f1148",
+          "scenario": "ordinary",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 2,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-e758bc3d3250684f8be5d890",
+          "scenario": "legitimate-travel",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 2,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-b866aa2af1f97bdca6a38992",
+          "scenario": "shared-household",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 8,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-2709052be95891902c0d430a",
+          "scenario": "shared-office",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 8,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-dd1bf56b2c62109c5bd50ee5",
+          "scenario": "legitimate-burst",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 2,
+            "tn": 4,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-b306e1f15435fabc975635d7",
+          "scenario": "credential-stuffing",
+          "attackEpisode": true,
+          "impactKind": "account_access",
+          "challengeOutcomeIfRequested": "fail",
+          "alertLeadSeconds": 240,
+          "alertLeadSteps": 1,
+          "impactOutcome": "prevented",
+          "intervention": {
+            "type": "challenge_failed",
+            "stage": "before_impact"
+          },
+          "intendedTransferMinor": 0,
+          "encounter": "first",
+          "counts": {
+            "tp": 2,
+            "fp": 0,
+            "tn": 0,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-bf2254f8a35d0c2c2b45b87f",
+          "scenario": "velocity",
+          "attackEpisode": true,
+          "impactKind": "transfer",
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": 270,
+          "alertLeadSteps": 1,
+          "impactOutcome": "executed",
+          "intervention": null,
+          "intendedTransferMinor": 54600,
+          "encounter": "first",
+          "counts": {
+            "tp": 2,
+            "fp": 0,
+            "tn": 0,
+            "fn": 4
+          }
+        },
+        {
+          "episodeId": "ep-74dc2bf1fa1e779e7dff5992",
+          "scenario": "takeover",
+          "attackEpisode": true,
+          "impactKind": "transfer",
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": 540,
+          "alertLeadSteps": 3,
+          "impactOutcome": "executed",
+          "intervention": null,
+          "intendedTransferMinor": 69000,
+          "encounter": "first",
+          "counts": {
+            "tp": 3,
+            "fp": 0,
+            "tn": 0,
+            "fn": 1
+          }
+        },
+        {
+          "episodeId": "ep-52e13feedf00f8340c42e310",
+          "scenario": "coordinated",
+          "attackEpisode": true,
+          "impactKind": "transfer",
+          "challengeOutcomeIfRequested": "fail",
+          "alertLeadSeconds": 420,
+          "alertLeadSteps": 2,
+          "impactOutcome": "prevented",
+          "intervention": {
+            "type": "challenge_failed",
+            "stage": "before_impact"
+          },
+          "intendedTransferMinor": 93800,
+          "encounter": "first",
+          "counts": {
+            "tp": 3,
+            "fp": 0,
+            "tn": 0,
+            "fn": 6
+          }
+        },
+        {
+          "episodeId": "ep-ed1b0607ca5bcf32e568e506",
+          "scenario": "ordinary",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 2,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-817b76856562ceb002504bc0",
+          "scenario": "legitimate-travel",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 2,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-9693cfddc1f69c23480d221e",
+          "scenario": "shared-household",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 8,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-dd427807dbb6458cd93b2cdd",
+          "scenario": "shared-office",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 8,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-a14a0da35431a75a0526b612",
+          "scenario": "legitimate-burst",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 1,
+            "tn": 4,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-76d33f006db64612e31071f8",
+          "scenario": "credential-stuffing",
+          "attackEpisode": true,
+          "impactKind": "account_access",
+          "challengeOutcomeIfRequested": "fail",
+          "alertLeadSeconds": 240,
+          "alertLeadSteps": 1,
+          "impactOutcome": "prevented",
+          "intervention": {
+            "type": "challenge_failed",
+            "stage": "before_impact"
+          },
+          "intendedTransferMinor": 0,
+          "encounter": "first",
+          "counts": {
+            "tp": 2,
+            "fp": 0,
+            "tn": 0,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-8f95a0cc791e146cf20bb0bf",
+          "scenario": "velocity",
+          "attackEpisode": true,
+          "impactKind": "transfer",
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": 270,
+          "alertLeadSteps": 1,
+          "impactOutcome": "executed",
+          "intervention": null,
+          "intendedTransferMinor": 54000,
+          "encounter": "first",
+          "counts": {
+            "tp": 2,
+            "fp": 0,
+            "tn": 0,
+            "fn": 4
+          }
+        },
+        {
+          "episodeId": "ep-ab893b4d2aa472260ed393cc",
+          "scenario": "takeover",
+          "attackEpisode": true,
+          "impactKind": "transfer",
+          "challengeOutcomeIfRequested": "fail",
+          "alertLeadSeconds": 540,
+          "alertLeadSteps": 3,
+          "impactOutcome": "prevented",
+          "intervention": {
+            "type": "challenge_failed",
+            "stage": "before_impact"
+          },
+          "intendedTransferMinor": 99200,
+          "encounter": "first",
+          "counts": {
+            "tp": 3,
+            "fp": 0,
+            "tn": 0,
+            "fn": 1
+          }
+        },
+        {
+          "episodeId": "ep-7ae6e28b21092bc3177d94ce",
+          "scenario": "coordinated",
+          "attackEpisode": true,
+          "impactKind": "transfer",
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": 420,
+          "alertLeadSteps": 2,
+          "impactOutcome": "executed",
+          "intervention": null,
+          "intendedTransferMinor": 93200,
+          "encounter": "first",
+          "counts": {
+            "tp": 3,
+            "fp": 0,
+            "tn": 0,
+            "fn": 6
+          }
+        },
+        {
+          "episodeId": "ep-325897143e49b1113120a62c",
+          "scenario": "ordinary",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 2,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-c0a312e5ae109e23e3591719",
+          "scenario": "legitimate-travel",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 2,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-a21ec44ad10490d8aa430695",
+          "scenario": "shared-household",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 8,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-ef347f493cce0155617ee1d2",
+          "scenario": "shared-office",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 8,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-1152a13fdd4faecc8f693d01",
+          "scenario": "legitimate-burst",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 1,
+            "tn": 4,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-a75b5e54d3579f29df2c277e",
+          "scenario": "credential-stuffing",
+          "attackEpisode": true,
+          "impactKind": "account_access",
+          "challengeOutcomeIfRequested": "fail",
+          "alertLeadSeconds": 240,
+          "alertLeadSteps": 1,
+          "impactOutcome": "prevented",
+          "intervention": {
+            "type": "challenge_failed",
+            "stage": "before_impact"
+          },
+          "intendedTransferMinor": 0,
+          "encounter": "first",
+          "counts": {
+            "tp": 2,
+            "fp": 0,
+            "tn": 0,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-80e02f56c4ec0fb2baf75fab",
+          "scenario": "velocity",
+          "attackEpisode": true,
+          "impactKind": "transfer",
+          "challengeOutcomeIfRequested": "fail",
+          "alertLeadSeconds": 270,
+          "alertLeadSteps": 1,
+          "impactOutcome": "prevented",
+          "intervention": {
+            "type": "challenge_failed",
+            "stage": "before_impact"
+          },
+          "intendedTransferMinor": 54400,
+          "encounter": "first",
+          "counts": {
+            "tp": 2,
+            "fp": 0,
+            "tn": 0,
+            "fn": 4
+          }
+        },
+        {
+          "episodeId": "ep-cb6c0c3028d2c126471ec7a6",
+          "scenario": "takeover",
+          "attackEpisode": true,
+          "impactKind": "transfer",
+          "challengeOutcomeIfRequested": "fail",
+          "alertLeadSeconds": 540,
+          "alertLeadSteps": 3,
+          "impactOutcome": "prevented",
+          "intervention": {
+            "type": "challenge_failed",
+            "stage": "before_impact"
+          },
+          "intendedTransferMinor": 71200,
+          "encounter": "first",
+          "counts": {
+            "tp": 3,
+            "fp": 0,
+            "tn": 0,
+            "fn": 1
+          }
+        },
+        {
+          "episodeId": "ep-e70fa8d0d25792559f531e9c",
+          "scenario": "coordinated",
+          "attackEpisode": true,
+          "impactKind": "transfer",
+          "challengeOutcomeIfRequested": "fail",
+          "alertLeadSeconds": 420,
+          "alertLeadSteps": 2,
+          "impactOutcome": "prevented",
+          "intervention": {
+            "type": "challenge_failed",
+            "stage": "before_impact"
+          },
+          "intendedTransferMinor": 60200,
+          "encounter": "first",
+          "counts": {
+            "tp": 3,
+            "fp": 0,
+            "tn": 0,
+            "fn": 6
+          }
+        },
+        {
+          "episodeId": "ep-abb2057585f86b366ac6c3e6",
+          "scenario": "ordinary",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 2,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-b30e28562718b89625b076cf",
+          "scenario": "legitimate-travel",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 2,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-c72fe6711bb6bf4d1d4e784f",
+          "scenario": "shared-household",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 8,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-5ab61def844fcf179d7705b5",
+          "scenario": "shared-office",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 8,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-d317ad9d0762d62d7af56200",
+          "scenario": "legitimate-burst",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 1,
+            "tn": 4,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-4e34ff35272880e1256c0aaf",
+          "scenario": "credential-stuffing",
+          "attackEpisode": true,
+          "impactKind": "account_access",
+          "challengeOutcomeIfRequested": "fail",
+          "alertLeadSeconds": 240,
+          "alertLeadSteps": 1,
+          "impactOutcome": "prevented",
+          "intervention": {
+            "type": "challenge_failed",
+            "stage": "before_impact"
+          },
+          "intendedTransferMinor": 0,
+          "encounter": "first",
+          "counts": {
+            "tp": 2,
+            "fp": 0,
+            "tn": 0,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-3926326bb2fb34cfd72a24d4",
+          "scenario": "velocity",
+          "attackEpisode": true,
+          "impactKind": "transfer",
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": 270,
+          "alertLeadSteps": 1,
+          "impactOutcome": "executed",
+          "intervention": null,
+          "intendedTransferMinor": 65800,
+          "encounter": "first",
+          "counts": {
+            "tp": 2,
+            "fp": 0,
+            "tn": 0,
+            "fn": 4
+          }
+        },
+        {
+          "episodeId": "ep-c3fbf2c48bbf49ce6f9662b2",
+          "scenario": "takeover",
+          "attackEpisode": true,
+          "impactKind": "transfer",
+          "challengeOutcomeIfRequested": "fail",
+          "alertLeadSeconds": 540,
+          "alertLeadSteps": 3,
+          "impactOutcome": "prevented",
+          "intervention": {
+            "type": "challenge_failed",
+            "stage": "before_impact"
+          },
+          "intendedTransferMinor": 84000,
+          "encounter": "first",
+          "counts": {
+            "tp": 3,
+            "fp": 0,
+            "tn": 0,
+            "fn": 1
+          }
+        },
+        {
+          "episodeId": "ep-4cd3e32e083554a9be52591f",
+          "scenario": "coordinated",
+          "attackEpisode": true,
+          "impactKind": "transfer",
+          "challengeOutcomeIfRequested": "fail",
+          "alertLeadSeconds": 420,
+          "alertLeadSteps": 2,
+          "impactOutcome": "prevented",
+          "intervention": {
+            "type": "challenge_failed",
+            "stage": "before_impact"
+          },
+          "intendedTransferMinor": 55200,
+          "encounter": "first",
+          "counts": {
+            "tp": 3,
+            "fp": 0,
+            "tn": 0,
+            "fn": 6
+          }
+        },
+        {
+          "episodeId": "ep-750a7432dbc4f70e366e9fd9",
+          "scenario": "ordinary",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 2,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-1b6a05681cdcd756625bc5f6",
+          "scenario": "legitimate-travel",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 2,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-6a2a173fa08f42689d85da3f",
+          "scenario": "shared-household",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 8,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-17147189c274c82aa07c1b02",
+          "scenario": "shared-office",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 8,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-7f0b052352f001d65e56a42a",
+          "scenario": "legitimate-burst",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 2,
+            "tn": 4,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-fd4b24a5a8f4a1ce72313219",
+          "scenario": "credential-stuffing",
+          "attackEpisode": true,
+          "impactKind": "account_access",
+          "challengeOutcomeIfRequested": "fail",
+          "alertLeadSeconds": 240,
+          "alertLeadSteps": 1,
+          "impactOutcome": "prevented",
+          "intervention": {
+            "type": "challenge_failed",
+            "stage": "before_impact"
+          },
+          "intendedTransferMinor": 0,
+          "encounter": "first",
+          "counts": {
+            "tp": 2,
+            "fp": 0,
+            "tn": 0,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-fee4cd7491c5747f136dc583",
+          "scenario": "velocity",
+          "attackEpisode": true,
+          "impactKind": "transfer",
+          "challengeOutcomeIfRequested": "fail",
+          "alertLeadSeconds": 270,
+          "alertLeadSteps": 1,
+          "impactOutcome": "prevented",
+          "intervention": {
+            "type": "challenge_failed",
+            "stage": "before_impact"
+          },
+          "intendedTransferMinor": 93800,
+          "encounter": "first",
+          "counts": {
+            "tp": 2,
+            "fp": 0,
+            "tn": 0,
+            "fn": 4
+          }
+        },
+        {
+          "episodeId": "ep-7d62422906304db35ff63c45",
+          "scenario": "takeover",
+          "attackEpisode": true,
+          "impactKind": "transfer",
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": 540,
+          "alertLeadSteps": 3,
+          "impactOutcome": "executed",
+          "intervention": null,
+          "intendedTransferMinor": 90000,
+          "encounter": "first",
+          "counts": {
+            "tp": 3,
+            "fp": 0,
+            "tn": 0,
+            "fn": 1
+          }
+        },
+        {
+          "episodeId": "ep-1d218661a27cac5b95098b2d",
+          "scenario": "coordinated",
+          "attackEpisode": true,
+          "impactKind": "transfer",
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": 420,
+          "alertLeadSteps": 2,
+          "impactOutcome": "executed",
+          "intervention": null,
+          "intendedTransferMinor": 57600,
+          "encounter": "first",
+          "counts": {
+            "tp": 3,
+            "fp": 0,
+            "tn": 0,
+            "fn": 6
+          }
+        },
+        {
+          "episodeId": "ep-2c9e356a38ac34d107bba655",
+          "scenario": "ordinary",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 2,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-06b7edd56a425d9cd82d1e5e",
+          "scenario": "legitimate-travel",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 2,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-b20217cfa068615c52d2842a",
+          "scenario": "shared-household",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 8,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-e3edbb9cd717ddb1492aafcd",
+          "scenario": "shared-office",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 8,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-8459049fe17047ecc3f3018b",
+          "scenario": "legitimate-burst",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 2,
+            "tn": 4,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-926cb7d6127dcaf3fa4ef16c",
+          "scenario": "credential-stuffing",
+          "attackEpisode": true,
+          "impactKind": "account_access",
+          "challengeOutcomeIfRequested": "fail",
+          "alertLeadSeconds": 240,
+          "alertLeadSteps": 1,
+          "impactOutcome": "prevented",
+          "intervention": {
+            "type": "challenge_failed",
+            "stage": "before_impact"
+          },
+          "intendedTransferMinor": 0,
+          "encounter": "first",
+          "counts": {
+            "tp": 2,
+            "fp": 0,
+            "tn": 0,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-44ec3de926f37206eb004029",
+          "scenario": "velocity",
+          "attackEpisode": true,
+          "impactKind": "transfer",
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": 270,
+          "alertLeadSteps": 1,
+          "impactOutcome": "executed",
+          "intervention": null,
+          "intendedTransferMinor": 67000,
+          "encounter": "first",
+          "counts": {
+            "tp": 2,
+            "fp": 0,
+            "tn": 0,
+            "fn": 3
+          }
+        },
+        {
+          "episodeId": "ep-c1c253ad2ffd8fefb32417aa",
+          "scenario": "takeover",
+          "attackEpisode": true,
+          "impactKind": "transfer",
+          "challengeOutcomeIfRequested": "fail",
+          "alertLeadSeconds": 540,
+          "alertLeadSteps": 3,
+          "impactOutcome": "prevented",
+          "intervention": {
+            "type": "challenge_failed",
+            "stage": "before_impact"
+          },
+          "intendedTransferMinor": 80600,
+          "encounter": "first",
+          "counts": {
+            "tp": 3,
+            "fp": 0,
+            "tn": 0,
+            "fn": 1
+          }
+        },
+        {
+          "episodeId": "ep-10671423affe7991810a85c6",
+          "scenario": "coordinated",
+          "attackEpisode": true,
+          "impactKind": "transfer",
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": 420,
+          "alertLeadSteps": 2,
+          "impactOutcome": "executed",
+          "intervention": null,
+          "intendedTransferMinor": 55800,
+          "encounter": "first",
+          "counts": {
+            "tp": 3,
+            "fp": 0,
+            "tn": 0,
+            "fn": 6
+          }
+        },
+        {
+          "episodeId": "ep-be1881f819419139ec327215",
+          "scenario": "ordinary",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 2,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-f3530f9a84abb77f370b1e70",
+          "scenario": "legitimate-travel",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 2,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-6a83640ea1a46c17447ffc1c",
+          "scenario": "shared-household",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 8,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-dc00e1ebdf702280624282bd",
+          "scenario": "shared-office",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 8,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-8025daa3ad40c545a29ec3ce",
+          "scenario": "legitimate-burst",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 2,
+            "tn": 4,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-18da3a446cbc8be21a97ff2d",
+          "scenario": "credential-stuffing",
+          "attackEpisode": true,
+          "impactKind": "account_access",
+          "challengeOutcomeIfRequested": "fail",
+          "alertLeadSeconds": 240,
+          "alertLeadSteps": 1,
+          "impactOutcome": "prevented",
+          "intervention": {
+            "type": "challenge_failed",
+            "stage": "before_impact"
+          },
+          "intendedTransferMinor": 0,
+          "encounter": "first",
+          "counts": {
+            "tp": 2,
+            "fp": 0,
+            "tn": 0,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-6a4f61f4161b43c4e62b59e2",
+          "scenario": "velocity",
+          "attackEpisode": true,
+          "impactKind": "transfer",
+          "challengeOutcomeIfRequested": "fail",
+          "alertLeadSeconds": 270,
+          "alertLeadSteps": 1,
+          "impactOutcome": "prevented",
+          "intervention": {
+            "type": "challenge_failed",
+            "stage": "before_impact"
+          },
+          "intendedTransferMinor": 79000,
+          "encounter": "first",
+          "counts": {
+            "tp": 2,
+            "fp": 0,
+            "tn": 0,
+            "fn": 3
+          }
+        },
+        {
+          "episodeId": "ep-ddb9dced741c20b79fd63a4e",
+          "scenario": "takeover",
+          "attackEpisode": true,
+          "impactKind": "transfer",
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": 540,
+          "alertLeadSteps": 3,
+          "impactOutcome": "executed",
+          "intervention": null,
+          "intendedTransferMinor": 68800,
+          "encounter": "first",
+          "counts": {
+            "tp": 3,
+            "fp": 0,
+            "tn": 0,
+            "fn": 1
+          }
+        },
+        {
+          "episodeId": "ep-6b23d39f17cbaaa20dc4d6fd",
+          "scenario": "coordinated",
+          "attackEpisode": true,
+          "impactKind": "transfer",
+          "challengeOutcomeIfRequested": "fail",
+          "alertLeadSeconds": 420,
+          "alertLeadSteps": 2,
+          "impactOutcome": "prevented",
+          "intervention": {
+            "type": "challenge_failed",
+            "stage": "before_impact"
+          },
+          "intendedTransferMinor": 83000,
+          "encounter": "first",
+          "counts": {
+            "tp": 3,
+            "fp": 0,
+            "tn": 0,
+            "fn": 6
+          }
+        },
+        {
+          "episodeId": "ep-21401882fe128b1c06ccded7",
+          "scenario": "ordinary",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 2,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-18ad139c53cdea1641eb8e65",
+          "scenario": "legitimate-travel",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 2,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-e25c5ceee81a3ab4408907b5",
+          "scenario": "shared-household",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 8,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-f31af046d9bd9c69f9f1b593",
+          "scenario": "shared-office",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 8,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-4e3618fca4b4e0fdd31c80c4",
+          "scenario": "legitimate-burst",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 2,
+            "tn": 4,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-4e0c5cd496dc2d257e1adf91",
+          "scenario": "credential-stuffing",
+          "attackEpisode": true,
+          "impactKind": "account_access",
+          "challengeOutcomeIfRequested": "fail",
+          "alertLeadSeconds": 240,
+          "alertLeadSteps": 1,
+          "impactOutcome": "prevented",
+          "intervention": {
+            "type": "challenge_failed",
+            "stage": "before_impact"
+          },
+          "intendedTransferMinor": 0,
+          "encounter": "first",
+          "counts": {
+            "tp": 2,
+            "fp": 0,
+            "tn": 0,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-12629651715aeddc7fbff030",
+          "scenario": "velocity",
+          "attackEpisode": true,
+          "impactKind": "transfer",
+          "challengeOutcomeIfRequested": "fail",
+          "alertLeadSeconds": 270,
+          "alertLeadSteps": 1,
+          "impactOutcome": "prevented",
+          "intervention": {
+            "type": "challenge_failed",
+            "stage": "before_impact"
+          },
+          "intendedTransferMinor": 55800,
+          "encounter": "first",
+          "counts": {
+            "tp": 2,
+            "fp": 0,
+            "tn": 0,
+            "fn": 3
+          }
+        }
+      ]
+    },
+    {
+      "mode": "rules",
+      "profile": "extended",
+      "memoryPolicy": "enforce",
+      "schema": "contextcon_eval_d2825b5e829ad331_rules_enforce",
+      "provider": null,
+      "model": null,
+      "retrievalScope": "disabled",
+      "memoryStore": "local in-process stand-in with read-back verification (not hosted Meko)",
+      "analyst": {
+        "semantics": "Each attack impact case is confirmed after the review delay in simulated time. A pattern is usable only after the worker reads it back.",
+        "delayMinutes": 30,
+        "confirmations": {
+          "published": 57
+        },
+        "corrections": {},
+        "firstPatternActiveAt": {
+          "credential-stuffing": "2026-11-01T12:38:00.000Z",
+          "velocity": "2026-11-01T13:29:00.000Z",
+          "takeover": "2026-11-01T14:21:00.000Z",
+          "coordinated": "2026-11-01T15:11:00.000Z"
+        }
+      },
+      "policyThresholds": {
+        "challenge": 25,
+        "block": 72
+      },
+      "wallMs": 10840,
+      "roleMix": {},
+      "interventionSemantics": "Identical attempted events are shadow-replayed. In a separate effect ledger, a BLOCK or failed synthetic challenge holds that account/session; a passed challenge permits the attempt. An earlier hold can prevent a later impact only in that same session. These outcomes are simulated, not counterfactual engine retraining.",
+      "classificationSemantics": "Unweighted event-level TP/FP/TN/FN for recommendations. BLOCK or STEP_UP_VERIFICATION is positive, including when a challenge passes. Malicious episode action and impact rows are ground-truth positives. Warmup and failed-authentication observation rows are excluded.",
+      "eventCount": 1999,
+      "warmupExcluded": 1280,
+      "failedAuthObservationsExcluded": 65,
+      "actionCounts": {
+        "ALLOW": 474,
+        "STEP_UP_VERIFICATION": 74,
+        "BLOCK": 106
+      },
+      "simulatedGates": {
+        "challengePassed": 39,
+        "challengeFailed": 29,
+        "directBlock": 28,
+        "precludedAttempts": 85
+      },
+      "classification": {
+        "tp": 157,
+        "fp": 23,
+        "tn": 336,
+        "fn": 138,
+        "precision": 0.8722222222222222,
+        "recall": 0.5322033898305085,
+        "f1": 0.6610526315789473,
+        "falsePositiveRate": 0.06406685236768803,
+        "falseNegativeRate": 0.46779661016949153
+      },
+      "byScenario": {
+        "credential-stuffing": {
+          "episodes": 15,
+          "classification": {
+            "tp": 30,
+            "fp": 0,
+            "tn": 0,
+            "fn": 0,
+            "precision": 1,
+            "recall": 1,
+            "f1": 1,
+            "falsePositiveRate": null,
+            "falseNegativeRate": 0
+          },
+          "attacksAlertedBeforeImpact": 15,
+          "attacksPrevented": 14
+        },
+        "velocity": {
+          "episodes": 15,
+          "classification": {
+            "tp": 30,
+            "fp": 0,
+            "tn": 0,
+            "fn": 53,
+            "precision": 1,
+            "recall": 0.3614457831325301,
+            "f1": 0.5309734513274337,
+            "falsePositiveRate": null,
+            "falseNegativeRate": 0.6385542168674698
+          },
+          "attacksAlertedBeforeImpact": 15,
+          "attacksPrevented": 15
+        },
+        "takeover": {
+          "episodes": 14,
+          "classification": {
+            "tp": 55,
+            "fp": 0,
+            "tn": 0,
+            "fn": 1,
+            "precision": 1,
+            "recall": 0.9821428571428571,
+            "f1": 0.990990990990991,
+            "falsePositiveRate": null,
+            "falseNegativeRate": 0.017857142857142856
+          },
+          "attacksAlertedBeforeImpact": 14,
+          "attacksPrevented": 14
+        },
+        "coordinated": {
+          "episodes": 14,
+          "classification": {
+            "tp": 42,
+            "fp": 0,
+            "tn": 0,
+            "fn": 84,
+            "precision": 1,
+            "recall": 0.3333333333333333,
+            "f1": 0.5,
+            "falsePositiveRate": null,
+            "falseNegativeRate": 0.6666666666666666
+          },
+          "attacksAlertedBeforeImpact": 14,
+          "attacksPrevented": 14
+        },
+        "ordinary": {
+          "episodes": 14,
+          "classification": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 28,
+            "fn": 0,
+            "precision": null,
+            "recall": null,
+            "f1": null,
+            "falsePositiveRate": 0,
+            "falseNegativeRate": null
+          },
+          "attacksAlertedBeforeImpact": 0,
+          "attacksPrevented": 0
+        },
+        "legitimate-travel": {
+          "episodes": 14,
+          "classification": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 28,
+            "fn": 0,
+            "precision": null,
+            "recall": null,
+            "f1": null,
+            "falsePositiveRate": 0,
+            "falseNegativeRate": null
+          },
+          "attacksAlertedBeforeImpact": 0,
+          "attacksPrevented": 0
+        },
+        "shared-household": {
+          "episodes": 14,
+          "classification": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 112,
+            "fn": 0,
+            "precision": null,
+            "recall": null,
+            "f1": null,
+            "falsePositiveRate": 0,
+            "falseNegativeRate": null
+          },
+          "attacksAlertedBeforeImpact": 0,
+          "attacksPrevented": 0
+        },
+        "shared-office": {
+          "episodes": 14,
+          "classification": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 112,
+            "fn": 0,
+            "precision": null,
+            "recall": null,
+            "f1": null,
+            "falsePositiveRate": 0,
+            "falseNegativeRate": null
+          },
+          "attacksAlertedBeforeImpact": 0,
+          "attacksPrevented": 0
+        },
+        "legitimate-burst": {
+          "episodes": 14,
+          "classification": {
+            "tp": 0,
+            "fp": 23,
+            "tn": 56,
+            "fn": 0,
+            "precision": 0,
+            "recall": null,
+            "f1": 0,
+            "falsePositiveRate": 0.2911392405063291,
+            "falseNegativeRate": null
+          },
+          "attacksAlertedBeforeImpact": 0,
+          "attacksPrevented": 0
+        }
+      },
+      "legitimateStepUpRate": 0.06406685236768803,
+      "legitimateActionableEvents": 359,
+      "attacks": {
+        "total": 58,
+        "alertedBeforeImpact": 58,
+        "alertLeadSeconds": {
+          "p50": 270,
+          "p95": 540
+        },
+        "alertLeadSteps": {
+          "p50": 1,
+          "p95": 3
+        },
+        "preventedBeforeImpact": 52,
+        "preventedAtImpact": 5,
+        "preventedByBlock": 28,
+        "preventedByFailedChallenge": 29,
+        "executed": 1,
+        "byImpactKind": {
+          "account_access": {
+            "total": 15,
+            "alertedBeforeImpact": 15,
+            "prevented": 14
+          },
+          "transfer": {
+            "total": 43,
+            "alertedBeforeImpact": 43,
+            "prevented": 43
+          }
+        },
+        "simulatedTransferHarmPreventedMinor": 3262800,
+        "simulatedTransferHarmExecutedMinor": 0,
+        "byEncounter": {
+          "first": {
+            "total": 4,
+            "prevented": 3,
+            "preventedBeforeImpact": 3,
+            "preventedByBlock": 0,
+            "executed": 1,
+            "executedHarmMinor": 0
+          },
+          "repeat": {
+            "total": 54,
+            "prevented": 54,
+            "preventedBeforeImpact": 49,
+            "preventedByBlock": 28,
+            "executed": 0,
+            "executedHarmMinor": 0
+          }
+        }
+      },
+      "telemetry": {
+        "totalCalls": 0,
+        "measuredUsageCalls": 0,
+        "inputTokens": 0,
+        "outputTokens": 0,
+        "latencyMs": {
+          "p50": 3.6106679999993503,
+          "p95": 5.85225999999966
+        },
+        "casesWithVerifiedFingerprintReuse": 0,
+        "casesWithEarlierPublishedObservations": 0,
+        "rankedSearches": 0,
+        "rankedHits": 0,
+        "rejectedCandidates": 0,
+        "verifiedPatternMatches": 106,
+        "verifiedPatternMatchesOnLegitimate": 0,
+        "verifiedPatternActionChanges": 106
+      },
+      "episodes": [
+        {
+          "episodeId": "ep-8311b96bc1e5ee3ec553d237",
+          "scenario": "credential-stuffing",
+          "attackEpisode": true,
+          "impactKind": "account_access",
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": 240,
+          "alertLeadSteps": 1,
+          "impactOutcome": "executed",
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": "first",
+          "counts": {
+            "tp": 2,
+            "fp": 0,
+            "tn": 0,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-49a308b1651811a33f4c5628",
+          "scenario": "velocity",
+          "attackEpisode": true,
+          "impactKind": "transfer",
+          "challengeOutcomeIfRequested": "fail",
+          "alertLeadSeconds": 270,
+          "alertLeadSteps": 1,
+          "impactOutcome": "prevented",
+          "intervention": {
+            "type": "challenge_failed",
+            "stage": "before_impact"
+          },
+          "intendedTransferMinor": 84000,
+          "encounter": "first",
+          "counts": {
+            "tp": 2,
+            "fp": 0,
+            "tn": 0,
+            "fn": 4
+          }
+        },
+        {
+          "episodeId": "ep-53a2865da16430c6990cf94f",
+          "scenario": "takeover",
+          "attackEpisode": true,
+          "impactKind": "transfer",
+          "challengeOutcomeIfRequested": "fail",
+          "alertLeadSeconds": 540,
+          "alertLeadSteps": 3,
+          "impactOutcome": "prevented",
+          "intervention": {
+            "type": "challenge_failed",
+            "stage": "before_impact"
+          },
+          "intendedTransferMinor": 97200,
+          "encounter": "first",
+          "counts": {
+            "tp": 3,
+            "fp": 0,
+            "tn": 0,
+            "fn": 1
+          }
+        },
+        {
+          "episodeId": "ep-a2e4a49c41dc53974f42c769",
+          "scenario": "coordinated",
+          "attackEpisode": true,
+          "impactKind": "transfer",
+          "challengeOutcomeIfRequested": "fail",
+          "alertLeadSeconds": 420,
+          "alertLeadSteps": 2,
+          "impactOutcome": "prevented",
+          "intervention": {
+            "type": "challenge_failed",
+            "stage": "before_impact"
+          },
+          "intendedTransferMinor": 95600,
+          "encounter": "first",
+          "counts": {
+            "tp": 3,
+            "fp": 0,
+            "tn": 0,
+            "fn": 6
+          }
+        },
+        {
+          "episodeId": "ep-79663d0df6b6e5fa99be7f55",
+          "scenario": "ordinary",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 2,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-6a5041cd3c51552f956fcd46",
+          "scenario": "legitimate-travel",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 2,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-c5cbbca1fc3c96bdd5bdc24f",
+          "scenario": "shared-household",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 8,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-3319a076afb591c6ac226ddf",
+          "scenario": "shared-office",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 8,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-3a42cc16bad638555725204d",
+          "scenario": "legitimate-burst",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 2,
+            "tn": 4,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-abda7f224df63a70f17ce242",
+          "scenario": "credential-stuffing",
+          "attackEpisode": true,
+          "impactKind": "account_access",
+          "challengeOutcomeIfRequested": "fail",
+          "alertLeadSeconds": 240,
+          "alertLeadSteps": 1,
+          "impactOutcome": "prevented",
+          "intervention": {
+            "type": "block",
+            "stage": "before_impact"
+          },
+          "intendedTransferMinor": 0,
+          "encounter": "repeat",
+          "counts": {
+            "tp": 2,
+            "fp": 0,
+            "tn": 0,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-3a3d458db4f45269dd4eef03",
+          "scenario": "velocity",
+          "attackEpisode": true,
+          "impactKind": "transfer",
+          "challengeOutcomeIfRequested": "fail",
+          "alertLeadSeconds": 270,
+          "alertLeadSteps": 1,
+          "impactOutcome": "prevented",
+          "intervention": {
+            "type": "challenge_failed",
+            "stage": "before_impact"
+          },
+          "intendedTransferMinor": 93000,
+          "encounter": "repeat",
+          "counts": {
+            "tp": 2,
+            "fp": 0,
+            "tn": 0,
+            "fn": 3
+          }
+        },
+        {
+          "episodeId": "ep-53af3f64855a7f43ebc08292",
+          "scenario": "takeover",
+          "attackEpisode": true,
+          "impactKind": "transfer",
+          "challengeOutcomeIfRequested": "fail",
+          "alertLeadSeconds": 540,
+          "alertLeadSteps": 3,
+          "impactOutcome": "prevented",
+          "intervention": {
+            "type": "challenge_failed",
+            "stage": "before_impact"
+          },
+          "intendedTransferMinor": 66600,
+          "encounter": "repeat",
+          "counts": {
+            "tp": 4,
+            "fp": 0,
+            "tn": 0,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-ddde13a9bcca19e8427d3cc5",
+          "scenario": "coordinated",
+          "attackEpisode": true,
+          "impactKind": "transfer",
+          "challengeOutcomeIfRequested": "fail",
+          "alertLeadSeconds": 420,
+          "alertLeadSteps": 2,
+          "impactOutcome": "prevented",
+          "intervention": {
+            "type": "challenge_failed",
+            "stage": "before_impact"
+          },
+          "intendedTransferMinor": 65800,
+          "encounter": "repeat",
+          "counts": {
+            "tp": 3,
+            "fp": 0,
+            "tn": 0,
+            "fn": 6
+          }
+        },
+        {
+          "episodeId": "ep-0d4d77d01907a5c0d1dbafa9",
+          "scenario": "ordinary",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 2,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-e2521e927452229fa2f73d46",
+          "scenario": "legitimate-travel",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 2,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-d07b00fad18839f9410de929",
+          "scenario": "shared-household",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 8,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-d095495b5c6ffb494c488cc0",
+          "scenario": "shared-office",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 8,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-ed02cb7f8187c83129188c13",
+          "scenario": "legitimate-burst",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 2,
+            "tn": 4,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-d2bae9ee13a1a637cf534fb5",
+          "scenario": "credential-stuffing",
+          "attackEpisode": true,
+          "impactKind": "account_access",
+          "challengeOutcomeIfRequested": "fail",
+          "alertLeadSeconds": 240,
+          "alertLeadSteps": 1,
+          "impactOutcome": "prevented",
+          "intervention": {
+            "type": "block",
+            "stage": "before_impact"
+          },
+          "intendedTransferMinor": 0,
+          "encounter": "repeat",
+          "counts": {
+            "tp": 2,
+            "fp": 0,
+            "tn": 0,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-12955811652be7d3fd9448b8",
+          "scenario": "velocity",
+          "attackEpisode": true,
+          "impactKind": "transfer",
+          "challengeOutcomeIfRequested": "fail",
+          "alertLeadSeconds": 270,
+          "alertLeadSteps": 1,
+          "impactOutcome": "prevented",
+          "intervention": {
+            "type": "challenge_failed",
+            "stage": "before_impact"
+          },
+          "intendedTransferMinor": 83600,
+          "encounter": "repeat",
+          "counts": {
+            "tp": 2,
+            "fp": 0,
+            "tn": 0,
+            "fn": 4
+          }
+        },
+        {
+          "episodeId": "ep-0203cfc6b741e81fa44d7ca2",
+          "scenario": "takeover",
+          "attackEpisode": true,
+          "impactKind": "transfer",
+          "challengeOutcomeIfRequested": "fail",
+          "alertLeadSeconds": 540,
+          "alertLeadSteps": 3,
+          "impactOutcome": "prevented",
+          "intervention": {
+            "type": "challenge_failed",
+            "stage": "before_impact"
+          },
+          "intendedTransferMinor": 55000,
+          "encounter": "repeat",
+          "counts": {
+            "tp": 4,
+            "fp": 0,
+            "tn": 0,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-e898d9574d74e99cd3cf4f7c",
+          "scenario": "coordinated",
+          "attackEpisode": true,
+          "impactKind": "transfer",
+          "challengeOutcomeIfRequested": "fail",
+          "alertLeadSeconds": 420,
+          "alertLeadSteps": 2,
+          "impactOutcome": "prevented",
+          "intervention": {
+            "type": "challenge_failed",
+            "stage": "before_impact"
+          },
+          "intendedTransferMinor": 79200,
+          "encounter": "repeat",
+          "counts": {
+            "tp": 3,
+            "fp": 0,
+            "tn": 0,
+            "fn": 6
+          }
+        },
+        {
+          "episodeId": "ep-802b56a5806084afabb78c74",
+          "scenario": "ordinary",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 2,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-b62c05c3e38cab7824d18440",
+          "scenario": "legitimate-travel",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 2,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-4e8ff3dd88ac57364d15728a",
+          "scenario": "shared-household",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 8,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-c2162271a5688983374db4e8",
+          "scenario": "shared-office",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 8,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-f3e21c373f46d21a40a15571",
+          "scenario": "legitimate-burst",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 2,
+            "tn": 4,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-28a7ff8e64580867096c4ffc",
+          "scenario": "credential-stuffing",
+          "attackEpisode": true,
+          "impactKind": "account_access",
+          "challengeOutcomeIfRequested": "fail",
+          "alertLeadSeconds": 240,
+          "alertLeadSteps": 1,
+          "impactOutcome": "prevented",
+          "intervention": {
+            "type": "block",
+            "stage": "before_impact"
+          },
+          "intendedTransferMinor": 0,
+          "encounter": "repeat",
+          "counts": {
+            "tp": 2,
+            "fp": 0,
+            "tn": 0,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-d79b6c6e602f51a62d64d13d",
+          "scenario": "velocity",
+          "attackEpisode": true,
+          "impactKind": "transfer",
+          "challengeOutcomeIfRequested": "fail",
+          "alertLeadSeconds": 270,
+          "alertLeadSteps": 1,
+          "impactOutcome": "prevented",
+          "intervention": {
+            "type": "challenge_failed",
+            "stage": "before_impact"
+          },
+          "intendedTransferMinor": 52400,
+          "encounter": "repeat",
+          "counts": {
+            "tp": 2,
+            "fp": 0,
+            "tn": 0,
+            "fn": 3
+          }
+        },
+        {
+          "episodeId": "ep-74e24d3517231ec18a083f17",
+          "scenario": "takeover",
+          "attackEpisode": true,
+          "impactKind": "transfer",
+          "challengeOutcomeIfRequested": "fail",
+          "alertLeadSeconds": 540,
+          "alertLeadSteps": 3,
+          "impactOutcome": "prevented",
+          "intervention": {
+            "type": "challenge_failed",
+            "stage": "before_impact"
+          },
+          "intendedTransferMinor": 52400,
+          "encounter": "repeat",
+          "counts": {
+            "tp": 4,
+            "fp": 0,
+            "tn": 0,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-30e41f8438005d9b24e45735",
+          "scenario": "coordinated",
+          "attackEpisode": true,
+          "impactKind": "transfer",
+          "challengeOutcomeIfRequested": "fail",
+          "alertLeadSeconds": 420,
+          "alertLeadSteps": 2,
+          "impactOutcome": "prevented",
+          "intervention": {
+            "type": "challenge_failed",
+            "stage": "before_impact"
+          },
+          "intendedTransferMinor": 88800,
+          "encounter": "repeat",
+          "counts": {
+            "tp": 3,
+            "fp": 0,
+            "tn": 0,
+            "fn": 6
+          }
+        },
+        {
+          "episodeId": "ep-53b3684143e1d01fe9ed50b0",
+          "scenario": "ordinary",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 2,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-f418bbceaaee624f9d7877aa",
+          "scenario": "legitimate-travel",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 2,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-7c4c0d6d59b7d9afce14646c",
+          "scenario": "shared-household",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 8,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-a80bb5fced477cb65a8c442c",
+          "scenario": "shared-office",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 8,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-0f0961776d709d51599566dd",
+          "scenario": "legitimate-burst",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 2,
+            "tn": 4,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-969c51b1235141ff0bcda170",
+          "scenario": "credential-stuffing",
+          "attackEpisode": true,
+          "impactKind": "account_access",
+          "challengeOutcomeIfRequested": "fail",
+          "alertLeadSeconds": 240,
+          "alertLeadSteps": 1,
+          "impactOutcome": "prevented",
+          "intervention": {
+            "type": "block",
+            "stage": "before_impact"
+          },
+          "intendedTransferMinor": 0,
+          "encounter": "repeat",
+          "counts": {
+            "tp": 2,
+            "fp": 0,
+            "tn": 0,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-34406a6f496a8546a4dd828d",
+          "scenario": "velocity",
+          "attackEpisode": true,
+          "impactKind": "transfer",
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": 270,
+          "alertLeadSteps": 1,
+          "impactOutcome": "prevented",
+          "intervention": {
+            "type": "block",
+            "stage": "at_impact"
+          },
+          "intendedTransferMinor": 88000,
+          "encounter": "repeat",
+          "counts": {
+            "tp": 2,
+            "fp": 0,
+            "tn": 0,
+            "fn": 4
+          }
+        },
+        {
+          "episodeId": "ep-a5a3cafada1005edbac72ea3",
+          "scenario": "takeover",
+          "attackEpisode": true,
+          "impactKind": "transfer",
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": 540,
+          "alertLeadSteps": 3,
+          "impactOutcome": "prevented",
+          "intervention": {
+            "type": "block",
+            "stage": "before_impact"
+          },
+          "intendedTransferMinor": 90400,
+          "encounter": "repeat",
+          "counts": {
+            "tp": 4,
+            "fp": 0,
+            "tn": 0,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-4c7d47600d1995ab7e049e80",
+          "scenario": "coordinated",
+          "attackEpisode": true,
+          "impactKind": "transfer",
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": 420,
+          "alertLeadSteps": 2,
+          "impactOutcome": "prevented",
+          "intervention": {
+            "type": "block",
+            "stage": "before_impact"
+          },
+          "intendedTransferMinor": 89400,
+          "encounter": "repeat",
+          "counts": {
+            "tp": 3,
+            "fp": 0,
+            "tn": 0,
+            "fn": 6
+          }
+        },
+        {
+          "episodeId": "ep-0120aa076f65d91ff48b9ee7",
+          "scenario": "ordinary",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 2,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-b4c75d58ce615c8a31e091b6",
+          "scenario": "legitimate-travel",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 2,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-c9b9f779539bd79992b5204a",
+          "scenario": "shared-household",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 8,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-24b6a1703472db49a2df5cac",
+          "scenario": "shared-office",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 8,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-58a2fcbc5da63cd3fcbaacd8",
+          "scenario": "legitimate-burst",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 1,
+            "tn": 4,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-9929c685e911d2fa8fd1692c",
+          "scenario": "credential-stuffing",
+          "attackEpisode": true,
+          "impactKind": "account_access",
+          "challengeOutcomeIfRequested": "fail",
+          "alertLeadSeconds": 240,
+          "alertLeadSteps": 1,
+          "impactOutcome": "prevented",
+          "intervention": {
+            "type": "block",
+            "stage": "before_impact"
+          },
+          "intendedTransferMinor": 0,
+          "encounter": "repeat",
+          "counts": {
+            "tp": 2,
+            "fp": 0,
+            "tn": 0,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-6771969419de1fdd601d08db",
+          "scenario": "velocity",
+          "attackEpisode": true,
+          "impactKind": "transfer",
+          "challengeOutcomeIfRequested": "fail",
+          "alertLeadSeconds": 270,
+          "alertLeadSteps": 1,
+          "impactOutcome": "prevented",
+          "intervention": {
+            "type": "challenge_failed",
+            "stage": "before_impact"
+          },
+          "intendedTransferMinor": 90800,
+          "encounter": "repeat",
+          "counts": {
+            "tp": 2,
+            "fp": 0,
+            "tn": 0,
+            "fn": 3
+          }
+        },
+        {
+          "episodeId": "ep-bbe56f0368d3292bc420d825",
+          "scenario": "takeover",
+          "attackEpisode": true,
+          "impactKind": "transfer",
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": 540,
+          "alertLeadSteps": 3,
+          "impactOutcome": "prevented",
+          "intervention": {
+            "type": "block",
+            "stage": "before_impact"
+          },
+          "intendedTransferMinor": 100200,
+          "encounter": "repeat",
+          "counts": {
+            "tp": 4,
+            "fp": 0,
+            "tn": 0,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-e4e2142089bd5eb5213a932c",
+          "scenario": "coordinated",
+          "attackEpisode": true,
+          "impactKind": "transfer",
+          "challengeOutcomeIfRequested": "fail",
+          "alertLeadSeconds": 420,
+          "alertLeadSteps": 2,
+          "impactOutcome": "prevented",
+          "intervention": {
+            "type": "challenge_failed",
+            "stage": "before_impact"
+          },
+          "intendedTransferMinor": 62400,
+          "encounter": "repeat",
+          "counts": {
+            "tp": 3,
+            "fp": 0,
+            "tn": 0,
+            "fn": 6
+          }
+        },
+        {
+          "episodeId": "ep-95d959ee79dd5ec21c894005",
+          "scenario": "ordinary",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 2,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-198b7609a84ea7d78803ac16",
+          "scenario": "legitimate-travel",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 2,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-67926d7e83a004a415faf19d",
+          "scenario": "shared-household",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 8,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-c0987a43d2f2336e78253c0d",
+          "scenario": "shared-office",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 8,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-027f9b1af850af088dd63b24",
+          "scenario": "legitimate-burst",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 1,
+            "tn": 4,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-998cde21a84519833322bbe8",
+          "scenario": "credential-stuffing",
+          "attackEpisode": true,
+          "impactKind": "account_access",
+          "challengeOutcomeIfRequested": "fail",
+          "alertLeadSeconds": 240,
+          "alertLeadSteps": 1,
+          "impactOutcome": "prevented",
+          "intervention": {
+            "type": "block",
+            "stage": "before_impact"
+          },
+          "intendedTransferMinor": 0,
+          "encounter": "repeat",
+          "counts": {
+            "tp": 2,
+            "fp": 0,
+            "tn": 0,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-0222a1e8322cf382ff219569",
+          "scenario": "velocity",
+          "attackEpisode": true,
+          "impactKind": "transfer",
+          "challengeOutcomeIfRequested": "fail",
+          "alertLeadSeconds": 270,
+          "alertLeadSteps": 1,
+          "impactOutcome": "prevented",
+          "intervention": {
+            "type": "challenge_failed",
+            "stage": "before_impact"
+          },
+          "intendedTransferMinor": 73000,
+          "encounter": "repeat",
+          "counts": {
+            "tp": 2,
+            "fp": 0,
+            "tn": 0,
+            "fn": 3
+          }
+        },
+        {
+          "episodeId": "ep-9434ac8d5540f2f2cd21d5eb",
+          "scenario": "takeover",
+          "attackEpisode": true,
+          "impactKind": "transfer",
+          "challengeOutcomeIfRequested": "fail",
+          "alertLeadSeconds": 540,
+          "alertLeadSteps": 3,
+          "impactOutcome": "prevented",
+          "intervention": {
+            "type": "challenge_failed",
+            "stage": "before_impact"
+          },
+          "intendedTransferMinor": 75400,
+          "encounter": "repeat",
+          "counts": {
+            "tp": 4,
+            "fp": 0,
+            "tn": 0,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-a560e51964ed191210acf615",
+          "scenario": "coordinated",
+          "attackEpisode": true,
+          "impactKind": "transfer",
+          "challengeOutcomeIfRequested": "fail",
+          "alertLeadSeconds": 420,
+          "alertLeadSteps": 2,
+          "impactOutcome": "prevented",
+          "intervention": {
+            "type": "challenge_failed",
+            "stage": "before_impact"
+          },
+          "intendedTransferMinor": 93600,
+          "encounter": "repeat",
+          "counts": {
+            "tp": 3,
+            "fp": 0,
+            "tn": 0,
+            "fn": 6
+          }
+        },
+        {
+          "episodeId": "ep-97f23b90fa6c30dd510f1148",
+          "scenario": "ordinary",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 2,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-e758bc3d3250684f8be5d890",
+          "scenario": "legitimate-travel",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 2,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-b866aa2af1f97bdca6a38992",
+          "scenario": "shared-household",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 8,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-2709052be95891902c0d430a",
+          "scenario": "shared-office",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 8,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-dd1bf56b2c62109c5bd50ee5",
+          "scenario": "legitimate-burst",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 2,
+            "tn": 4,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-b306e1f15435fabc975635d7",
+          "scenario": "credential-stuffing",
+          "attackEpisode": true,
+          "impactKind": "account_access",
+          "challengeOutcomeIfRequested": "fail",
+          "alertLeadSeconds": 240,
+          "alertLeadSteps": 1,
+          "impactOutcome": "prevented",
+          "intervention": {
+            "type": "block",
+            "stage": "before_impact"
+          },
+          "intendedTransferMinor": 0,
+          "encounter": "repeat",
+          "counts": {
+            "tp": 2,
+            "fp": 0,
+            "tn": 0,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-bf2254f8a35d0c2c2b45b87f",
+          "scenario": "velocity",
+          "attackEpisode": true,
+          "impactKind": "transfer",
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": 270,
+          "alertLeadSteps": 1,
+          "impactOutcome": "prevented",
+          "intervention": {
+            "type": "block",
+            "stage": "at_impact"
+          },
+          "intendedTransferMinor": 54600,
+          "encounter": "repeat",
+          "counts": {
+            "tp": 2,
+            "fp": 0,
+            "tn": 0,
+            "fn": 4
+          }
+        },
+        {
+          "episodeId": "ep-74dc2bf1fa1e779e7dff5992",
+          "scenario": "takeover",
+          "attackEpisode": true,
+          "impactKind": "transfer",
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": 540,
+          "alertLeadSteps": 3,
+          "impactOutcome": "prevented",
+          "intervention": {
+            "type": "block",
+            "stage": "before_impact"
+          },
+          "intendedTransferMinor": 69000,
+          "encounter": "repeat",
+          "counts": {
+            "tp": 4,
+            "fp": 0,
+            "tn": 0,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-52e13feedf00f8340c42e310",
+          "scenario": "coordinated",
+          "attackEpisode": true,
+          "impactKind": "transfer",
+          "challengeOutcomeIfRequested": "fail",
+          "alertLeadSeconds": 420,
+          "alertLeadSteps": 2,
+          "impactOutcome": "prevented",
+          "intervention": {
+            "type": "challenge_failed",
+            "stage": "before_impact"
+          },
+          "intendedTransferMinor": 93800,
+          "encounter": "repeat",
+          "counts": {
+            "tp": 3,
+            "fp": 0,
+            "tn": 0,
+            "fn": 6
+          }
+        },
+        {
+          "episodeId": "ep-ed1b0607ca5bcf32e568e506",
+          "scenario": "ordinary",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 2,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-817b76856562ceb002504bc0",
+          "scenario": "legitimate-travel",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 2,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-9693cfddc1f69c23480d221e",
+          "scenario": "shared-household",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 8,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-dd427807dbb6458cd93b2cdd",
+          "scenario": "shared-office",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 8,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-a14a0da35431a75a0526b612",
+          "scenario": "legitimate-burst",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 1,
+            "tn": 4,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-76d33f006db64612e31071f8",
+          "scenario": "credential-stuffing",
+          "attackEpisode": true,
+          "impactKind": "account_access",
+          "challengeOutcomeIfRequested": "fail",
+          "alertLeadSeconds": 240,
+          "alertLeadSteps": 1,
+          "impactOutcome": "prevented",
+          "intervention": {
+            "type": "block",
+            "stage": "before_impact"
+          },
+          "intendedTransferMinor": 0,
+          "encounter": "repeat",
+          "counts": {
+            "tp": 2,
+            "fp": 0,
+            "tn": 0,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-8f95a0cc791e146cf20bb0bf",
+          "scenario": "velocity",
+          "attackEpisode": true,
+          "impactKind": "transfer",
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": 270,
+          "alertLeadSteps": 1,
+          "impactOutcome": "prevented",
+          "intervention": {
+            "type": "block",
+            "stage": "at_impact"
+          },
+          "intendedTransferMinor": 54000,
+          "encounter": "repeat",
+          "counts": {
+            "tp": 2,
+            "fp": 0,
+            "tn": 0,
+            "fn": 4
+          }
+        },
+        {
+          "episodeId": "ep-ab893b4d2aa472260ed393cc",
+          "scenario": "takeover",
+          "attackEpisode": true,
+          "impactKind": "transfer",
+          "challengeOutcomeIfRequested": "fail",
+          "alertLeadSeconds": 540,
+          "alertLeadSteps": 3,
+          "impactOutcome": "prevented",
+          "intervention": {
+            "type": "challenge_failed",
+            "stage": "before_impact"
+          },
+          "intendedTransferMinor": 99200,
+          "encounter": "repeat",
+          "counts": {
+            "tp": 4,
+            "fp": 0,
+            "tn": 0,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-7ae6e28b21092bc3177d94ce",
+          "scenario": "coordinated",
+          "attackEpisode": true,
+          "impactKind": "transfer",
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": 420,
+          "alertLeadSteps": 2,
+          "impactOutcome": "prevented",
+          "intervention": {
+            "type": "block",
+            "stage": "before_impact"
+          },
+          "intendedTransferMinor": 93200,
+          "encounter": "repeat",
+          "counts": {
+            "tp": 3,
+            "fp": 0,
+            "tn": 0,
+            "fn": 6
+          }
+        },
+        {
+          "episodeId": "ep-325897143e49b1113120a62c",
+          "scenario": "ordinary",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 2,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-c0a312e5ae109e23e3591719",
+          "scenario": "legitimate-travel",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 2,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-a21ec44ad10490d8aa430695",
+          "scenario": "shared-household",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 8,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-ef347f493cce0155617ee1d2",
+          "scenario": "shared-office",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 8,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-1152a13fdd4faecc8f693d01",
+          "scenario": "legitimate-burst",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 1,
+            "tn": 4,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-a75b5e54d3579f29df2c277e",
+          "scenario": "credential-stuffing",
+          "attackEpisode": true,
+          "impactKind": "account_access",
+          "challengeOutcomeIfRequested": "fail",
+          "alertLeadSeconds": 240,
+          "alertLeadSteps": 1,
+          "impactOutcome": "prevented",
+          "intervention": {
+            "type": "block",
+            "stage": "before_impact"
+          },
+          "intendedTransferMinor": 0,
+          "encounter": "repeat",
+          "counts": {
+            "tp": 2,
+            "fp": 0,
+            "tn": 0,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-80e02f56c4ec0fb2baf75fab",
+          "scenario": "velocity",
+          "attackEpisode": true,
+          "impactKind": "transfer",
+          "challengeOutcomeIfRequested": "fail",
+          "alertLeadSeconds": 270,
+          "alertLeadSteps": 1,
+          "impactOutcome": "prevented",
+          "intervention": {
+            "type": "challenge_failed",
+            "stage": "before_impact"
+          },
+          "intendedTransferMinor": 54400,
+          "encounter": "repeat",
+          "counts": {
+            "tp": 2,
+            "fp": 0,
+            "tn": 0,
+            "fn": 4
+          }
+        },
+        {
+          "episodeId": "ep-cb6c0c3028d2c126471ec7a6",
+          "scenario": "takeover",
+          "attackEpisode": true,
+          "impactKind": "transfer",
+          "challengeOutcomeIfRequested": "fail",
+          "alertLeadSeconds": 540,
+          "alertLeadSteps": 3,
+          "impactOutcome": "prevented",
+          "intervention": {
+            "type": "challenge_failed",
+            "stage": "before_impact"
+          },
+          "intendedTransferMinor": 71200,
+          "encounter": "repeat",
+          "counts": {
+            "tp": 4,
+            "fp": 0,
+            "tn": 0,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-e70fa8d0d25792559f531e9c",
+          "scenario": "coordinated",
+          "attackEpisode": true,
+          "impactKind": "transfer",
+          "challengeOutcomeIfRequested": "fail",
+          "alertLeadSeconds": 420,
+          "alertLeadSteps": 2,
+          "impactOutcome": "prevented",
+          "intervention": {
+            "type": "challenge_failed",
+            "stage": "before_impact"
+          },
+          "intendedTransferMinor": 60200,
+          "encounter": "repeat",
+          "counts": {
+            "tp": 3,
+            "fp": 0,
+            "tn": 0,
+            "fn": 6
+          }
+        },
+        {
+          "episodeId": "ep-abb2057585f86b366ac6c3e6",
+          "scenario": "ordinary",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 2,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-b30e28562718b89625b076cf",
+          "scenario": "legitimate-travel",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 2,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-c72fe6711bb6bf4d1d4e784f",
+          "scenario": "shared-household",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 8,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-5ab61def844fcf179d7705b5",
+          "scenario": "shared-office",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 8,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-d317ad9d0762d62d7af56200",
+          "scenario": "legitimate-burst",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 1,
+            "tn": 4,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-4e34ff35272880e1256c0aaf",
+          "scenario": "credential-stuffing",
+          "attackEpisode": true,
+          "impactKind": "account_access",
+          "challengeOutcomeIfRequested": "fail",
+          "alertLeadSeconds": 240,
+          "alertLeadSteps": 1,
+          "impactOutcome": "prevented",
+          "intervention": {
+            "type": "block",
+            "stage": "before_impact"
+          },
+          "intendedTransferMinor": 0,
+          "encounter": "repeat",
+          "counts": {
+            "tp": 2,
+            "fp": 0,
+            "tn": 0,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-3926326bb2fb34cfd72a24d4",
+          "scenario": "velocity",
+          "attackEpisode": true,
+          "impactKind": "transfer",
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": 270,
+          "alertLeadSteps": 1,
+          "impactOutcome": "prevented",
+          "intervention": {
+            "type": "block",
+            "stage": "at_impact"
+          },
+          "intendedTransferMinor": 65800,
+          "encounter": "repeat",
+          "counts": {
+            "tp": 2,
+            "fp": 0,
+            "tn": 0,
+            "fn": 4
+          }
+        },
+        {
+          "episodeId": "ep-c3fbf2c48bbf49ce6f9662b2",
+          "scenario": "takeover",
+          "attackEpisode": true,
+          "impactKind": "transfer",
+          "challengeOutcomeIfRequested": "fail",
+          "alertLeadSeconds": 540,
+          "alertLeadSteps": 3,
+          "impactOutcome": "prevented",
+          "intervention": {
+            "type": "challenge_failed",
+            "stage": "before_impact"
+          },
+          "intendedTransferMinor": 84000,
+          "encounter": "repeat",
+          "counts": {
+            "tp": 4,
+            "fp": 0,
+            "tn": 0,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-4cd3e32e083554a9be52591f",
+          "scenario": "coordinated",
+          "attackEpisode": true,
+          "impactKind": "transfer",
+          "challengeOutcomeIfRequested": "fail",
+          "alertLeadSeconds": 420,
+          "alertLeadSteps": 2,
+          "impactOutcome": "prevented",
+          "intervention": {
+            "type": "challenge_failed",
+            "stage": "before_impact"
+          },
+          "intendedTransferMinor": 55200,
+          "encounter": "repeat",
+          "counts": {
+            "tp": 3,
+            "fp": 0,
+            "tn": 0,
+            "fn": 6
+          }
+        },
+        {
+          "episodeId": "ep-750a7432dbc4f70e366e9fd9",
+          "scenario": "ordinary",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 2,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-1b6a05681cdcd756625bc5f6",
+          "scenario": "legitimate-travel",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 2,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-6a2a173fa08f42689d85da3f",
+          "scenario": "shared-household",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 8,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-17147189c274c82aa07c1b02",
+          "scenario": "shared-office",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 8,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-7f0b052352f001d65e56a42a",
+          "scenario": "legitimate-burst",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 2,
+            "tn": 4,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-fd4b24a5a8f4a1ce72313219",
+          "scenario": "credential-stuffing",
+          "attackEpisode": true,
+          "impactKind": "account_access",
+          "challengeOutcomeIfRequested": "fail",
+          "alertLeadSeconds": 240,
+          "alertLeadSteps": 1,
+          "impactOutcome": "prevented",
+          "intervention": {
+            "type": "block",
+            "stage": "before_impact"
+          },
+          "intendedTransferMinor": 0,
+          "encounter": "repeat",
+          "counts": {
+            "tp": 2,
+            "fp": 0,
+            "tn": 0,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-fee4cd7491c5747f136dc583",
+          "scenario": "velocity",
+          "attackEpisode": true,
+          "impactKind": "transfer",
+          "challengeOutcomeIfRequested": "fail",
+          "alertLeadSeconds": 270,
+          "alertLeadSteps": 1,
+          "impactOutcome": "prevented",
+          "intervention": {
+            "type": "challenge_failed",
+            "stage": "before_impact"
+          },
+          "intendedTransferMinor": 93800,
+          "encounter": "repeat",
+          "counts": {
+            "tp": 2,
+            "fp": 0,
+            "tn": 0,
+            "fn": 4
+          }
+        },
+        {
+          "episodeId": "ep-7d62422906304db35ff63c45",
+          "scenario": "takeover",
+          "attackEpisode": true,
+          "impactKind": "transfer",
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": 540,
+          "alertLeadSteps": 3,
+          "impactOutcome": "prevented",
+          "intervention": {
+            "type": "block",
+            "stage": "before_impact"
+          },
+          "intendedTransferMinor": 90000,
+          "encounter": "repeat",
+          "counts": {
+            "tp": 4,
+            "fp": 0,
+            "tn": 0,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-1d218661a27cac5b95098b2d",
+          "scenario": "coordinated",
+          "attackEpisode": true,
+          "impactKind": "transfer",
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": 420,
+          "alertLeadSteps": 2,
+          "impactOutcome": "prevented",
+          "intervention": {
+            "type": "block",
+            "stage": "before_impact"
+          },
+          "intendedTransferMinor": 57600,
+          "encounter": "repeat",
+          "counts": {
+            "tp": 3,
+            "fp": 0,
+            "tn": 0,
+            "fn": 6
+          }
+        },
+        {
+          "episodeId": "ep-2c9e356a38ac34d107bba655",
+          "scenario": "ordinary",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 2,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-06b7edd56a425d9cd82d1e5e",
+          "scenario": "legitimate-travel",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 2,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-b20217cfa068615c52d2842a",
+          "scenario": "shared-household",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 8,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-e3edbb9cd717ddb1492aafcd",
+          "scenario": "shared-office",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 8,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-8459049fe17047ecc3f3018b",
+          "scenario": "legitimate-burst",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 2,
+            "tn": 4,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-926cb7d6127dcaf3fa4ef16c",
+          "scenario": "credential-stuffing",
+          "attackEpisode": true,
+          "impactKind": "account_access",
+          "challengeOutcomeIfRequested": "fail",
+          "alertLeadSeconds": 240,
+          "alertLeadSteps": 1,
+          "impactOutcome": "prevented",
+          "intervention": {
+            "type": "block",
+            "stage": "before_impact"
+          },
+          "intendedTransferMinor": 0,
+          "encounter": "repeat",
+          "counts": {
+            "tp": 2,
+            "fp": 0,
+            "tn": 0,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-44ec3de926f37206eb004029",
+          "scenario": "velocity",
+          "attackEpisode": true,
+          "impactKind": "transfer",
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": 270,
+          "alertLeadSteps": 1,
+          "impactOutcome": "prevented",
+          "intervention": {
+            "type": "block",
+            "stage": "at_impact"
+          },
+          "intendedTransferMinor": 67000,
+          "encounter": "repeat",
+          "counts": {
+            "tp": 2,
+            "fp": 0,
+            "tn": 0,
+            "fn": 3
+          }
+        },
+        {
+          "episodeId": "ep-c1c253ad2ffd8fefb32417aa",
+          "scenario": "takeover",
+          "attackEpisode": true,
+          "impactKind": "transfer",
+          "challengeOutcomeIfRequested": "fail",
+          "alertLeadSeconds": 540,
+          "alertLeadSteps": 3,
+          "impactOutcome": "prevented",
+          "intervention": {
+            "type": "challenge_failed",
+            "stage": "before_impact"
+          },
+          "intendedTransferMinor": 80600,
+          "encounter": "repeat",
+          "counts": {
+            "tp": 4,
+            "fp": 0,
+            "tn": 0,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-10671423affe7991810a85c6",
+          "scenario": "coordinated",
+          "attackEpisode": true,
+          "impactKind": "transfer",
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": 420,
+          "alertLeadSteps": 2,
+          "impactOutcome": "prevented",
+          "intervention": {
+            "type": "block",
+            "stage": "before_impact"
+          },
+          "intendedTransferMinor": 55800,
+          "encounter": "repeat",
+          "counts": {
+            "tp": 3,
+            "fp": 0,
+            "tn": 0,
+            "fn": 6
+          }
+        },
+        {
+          "episodeId": "ep-be1881f819419139ec327215",
+          "scenario": "ordinary",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 2,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-f3530f9a84abb77f370b1e70",
+          "scenario": "legitimate-travel",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 2,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-6a83640ea1a46c17447ffc1c",
+          "scenario": "shared-household",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 8,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-dc00e1ebdf702280624282bd",
+          "scenario": "shared-office",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 8,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-8025daa3ad40c545a29ec3ce",
+          "scenario": "legitimate-burst",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 2,
+            "tn": 4,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-18da3a446cbc8be21a97ff2d",
+          "scenario": "credential-stuffing",
+          "attackEpisode": true,
+          "impactKind": "account_access",
+          "challengeOutcomeIfRequested": "fail",
+          "alertLeadSeconds": 240,
+          "alertLeadSteps": 1,
+          "impactOutcome": "prevented",
+          "intervention": {
+            "type": "block",
+            "stage": "before_impact"
+          },
+          "intendedTransferMinor": 0,
+          "encounter": "repeat",
+          "counts": {
+            "tp": 2,
+            "fp": 0,
+            "tn": 0,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-6a4f61f4161b43c4e62b59e2",
+          "scenario": "velocity",
+          "attackEpisode": true,
+          "impactKind": "transfer",
+          "challengeOutcomeIfRequested": "fail",
+          "alertLeadSeconds": 270,
+          "alertLeadSteps": 1,
+          "impactOutcome": "prevented",
+          "intervention": {
+            "type": "challenge_failed",
+            "stage": "before_impact"
+          },
+          "intendedTransferMinor": 79000,
+          "encounter": "repeat",
+          "counts": {
+            "tp": 2,
+            "fp": 0,
+            "tn": 0,
+            "fn": 3
+          }
+        },
+        {
+          "episodeId": "ep-ddb9dced741c20b79fd63a4e",
+          "scenario": "takeover",
+          "attackEpisode": true,
+          "impactKind": "transfer",
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": 540,
+          "alertLeadSteps": 3,
+          "impactOutcome": "prevented",
+          "intervention": {
+            "type": "block",
+            "stage": "before_impact"
+          },
+          "intendedTransferMinor": 68800,
+          "encounter": "repeat",
+          "counts": {
+            "tp": 4,
+            "fp": 0,
+            "tn": 0,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-6b23d39f17cbaaa20dc4d6fd",
+          "scenario": "coordinated",
+          "attackEpisode": true,
+          "impactKind": "transfer",
+          "challengeOutcomeIfRequested": "fail",
+          "alertLeadSeconds": 420,
+          "alertLeadSteps": 2,
+          "impactOutcome": "prevented",
+          "intervention": {
+            "type": "challenge_failed",
+            "stage": "before_impact"
+          },
+          "intendedTransferMinor": 83000,
+          "encounter": "repeat",
+          "counts": {
+            "tp": 3,
+            "fp": 0,
+            "tn": 0,
+            "fn": 6
+          }
+        },
+        {
+          "episodeId": "ep-21401882fe128b1c06ccded7",
+          "scenario": "ordinary",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 2,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-18ad139c53cdea1641eb8e65",
+          "scenario": "legitimate-travel",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 2,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-e25c5ceee81a3ab4408907b5",
+          "scenario": "shared-household",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 8,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-f31af046d9bd9c69f9f1b593",
+          "scenario": "shared-office",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 8,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-4e3618fca4b4e0fdd31c80c4",
+          "scenario": "legitimate-burst",
+          "attackEpisode": false,
+          "impactKind": null,
+          "challengeOutcomeIfRequested": "pass",
+          "alertLeadSeconds": null,
+          "alertLeadSteps": null,
+          "impactOutcome": null,
+          "intervention": null,
+          "intendedTransferMinor": 0,
+          "encounter": null,
+          "counts": {
+            "tp": 0,
+            "fp": 2,
+            "tn": 4,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-4e0c5cd496dc2d257e1adf91",
+          "scenario": "credential-stuffing",
+          "attackEpisode": true,
+          "impactKind": "account_access",
+          "challengeOutcomeIfRequested": "fail",
+          "alertLeadSeconds": 240,
+          "alertLeadSteps": 1,
+          "impactOutcome": "prevented",
+          "intervention": {
+            "type": "block",
+            "stage": "before_impact"
+          },
+          "intendedTransferMinor": 0,
+          "encounter": "repeat",
+          "counts": {
+            "tp": 2,
+            "fp": 0,
+            "tn": 0,
+            "fn": 0
+          }
+        },
+        {
+          "episodeId": "ep-12629651715aeddc7fbff030",
+          "scenario": "velocity",
+          "attackEpisode": true,
+          "impactKind": "transfer",
+          "challengeOutcomeIfRequested": "fail",
+          "alertLeadSeconds": 270,
+          "alertLeadSteps": 1,
+          "impactOutcome": "prevented",
+          "intervention": {
+            "type": "challenge_failed",
+            "stage": "before_impact"
+          },
+          "intendedTransferMinor": 55800,
+          "encounter": "repeat",
+          "counts": {
+            "tp": 2,
+            "fp": 0,
+            "tn": 0,
+            "fn": 3
+          }
+        }
+      ]
+    }
+  ]
+}

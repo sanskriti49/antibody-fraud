@@ -26,7 +26,7 @@ beforeAll(async () => {
   admin = createPool(connection);
   await admin.query('CREATE SCHEMA ' + schema);
   pool = createPool(connection, '-c search_path=' + schema);
-  expect(await migrate(pool)).toEqual(['001_events_cases.sql', '002_collective_learning.sql', '003_publication_reconciliation.sql', '005_graph_indexes.sql', '006_fingerprint_revocation.sql']);
+  expect(await migrate(pool)).toEqual(['001_events_cases.sql', '002_collective_learning.sql', '003_publication_reconciliation.sql', '005_graph_indexes.sql', '006_fingerprint_revocation.sql', '007_feedback_publication.sql', '008_playbooks.sql']);
   expect(await migrate(pool)).toEqual([]);
 });
 

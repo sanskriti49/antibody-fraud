@@ -7,10 +7,12 @@ import { actionSchema, type RiskAssessment } from './risk.js';
 import { failureCode, type ContextSearch, type MemoryReader, type ModelUsage, type StructuredModel } from './integrations/ports.js';
 
 import { ModelHttpError } from './integrations/models.js';
-import { FINGERPRINT_QUERY, GRAPH_AGENT, LOGIN_AGENT, TRANSFER_AGENT, type LearningService, type Pack, type ProvisionalSignal, type Reuse } from './learning.js';
+import { FINGERPRINT_QUERY, GRAPH_AGENT, INVESTIGATOR_AGENT, LOGIN_AGENT, TRANSFER_AGENT, type LearningService, type Pack, type ProvisionalSignal, type Reuse } from './learning.js';
+import type { MemoryPolicyMode } from './memory-policy.js';
+import type { BoundPassage, PlaybookReference } from './playbooks.js';
 
 const behaviourAgentId = LOGIN_AGENT;
-const investigatorId = 'contextcon-investigator';
+const investigatorId = INVESTIGATOR_AGENT;
 const evidenceTopics = new Map([
   ['login_pressure', 'repeated failed logins'],
   ['recent_reset', 'recent password reset'],
@@ -68,8 +70,13 @@ export type Investigation = {
   provisionalSignals?: ProvisionalSignal[];
   provisionalContextError?: string;
   specialistContexts?: { agentId: string; pack: Pack; context: ContextTrace }[];
+  knowledge?: KnowledgeTrace;
   rationale: string;
 };
+type KnowledgeTrace = { query: string; durationMs: number } & (
+  | { status: 'ok'; hits: number; passages: BoundPassage[]; unverified: number }
+  | { status: 'error'; error: string }
+);
 
 export type InvestigationOptions = {
   mode: 'rules' | 'agents' | 'meko';
@@ -81,6 +88,8 @@ export type InvestigationOptions = {
   collective?: boolean;
   advanced?: boolean;
   publishProvisional?: boolean;
+  /** off keeps earlier behaviour. shadow records would-be decisions. enforce lets verified patterns block. */
+  memoryPolicy?: MemoryPolicyMode;
   memoryTimeoutMs: number;
   modelTimeoutMs: number;
 };
@@ -232,6 +241,7 @@ export function fingerprintQuery(risk: RiskAssessment) {
 
 export async function investigateCollectively(
   caseId: string, kind: string, features: Features, risk: RiskAssessment, options: InvestigationOptions, graph?: GraphSnapshot,
+  playbooks: readonly PlaybookReference[] = [],
 ): Promise<Investigation> {
   const team: AgentTrace[] = [];
   const specialistContexts: NonNullable<Investigation['specialistContexts']> = [];
@@ -307,9 +317,25 @@ export async function investigateCollectively(
       provisionalContextError = failureCode(error, new AbortController().signal, 'meko_signal_unavailable');
     }
   };
+  // Approved playbook passages from the Meko knowledge base, verified against the local registry.
+  let knowledge: KnowledgeTrace | undefined;
+  const loadKnowledge = async () => {
+    if (options.mode !== 'meko' || !options.advanced || !learning) return;
+    const topics = risk.evidence.map((item) => evidenceTopics.get(item.id) ?? transferTopics.get(item.id) ?? item.id.replaceAll('_', ' '));
+    const query = 'Fraud playbook investigation checklist for ' + topics.join(', ');
+    const started = performance.now();
+    try {
+      const found = await learning.knowledgeContext(query, investigatorId);
+      if (found) knowledge = { status: 'ok', query, durationMs: performance.now() - started, ...found, passages: found.bound };
+    } catch (error) {
+      knowledge = { status: 'error', query, durationMs: performance.now() - started,
+        error: failureCode(error, new AbortController().signal, 'meko_knowledge_unavailable') };
+    }
+  };
   await Promise.all([
     ...plans.map((plan) => recall('risk', plan.query, plan.id)),
     loadPrior(),
+    loadKnowledge(),
   ]);
 
   // Keep model scheduling serial per case. Parallel Meko reads do not consume local model slots.
@@ -346,9 +372,14 @@ export async function investigateCollectively(
     .filter((item) => supplied.has(item.id)).map((item) => [item.id, item])).values()];
   const investigator = available.length || reuse ? await runAgent(
     investigatorId, caseId, synthesisEvidence,
-    'Recommend one action with a single short sentence. Weigh specialist agreement and missing corroboration. Use only the supplied evidence. The policy controls the final verdict.',
+    'Recommend one action with a single short sentence. Weigh specialist agreement and missing corroboration. Use only the supplied evidence. Treat approvedPlaybooks as review guidance, not evidence. The policy controls the final verdict.',
     { specialistResults: available, conflictingRecommendations: conflict, missingCorroboration,
       verifiedMemoryConditions: reuse?.evidence ?? [],
+      // Approved, versioned guidance. Titles and checklist items only.
+      ...(playbooks.length ? { approvedPlaybooks: playbooks.slice(0, 3).map(({ id, title, checklist }) => ({ id, title, checklist: checklist.slice(0, 4) })) } : {}),
+      ...(knowledge?.status === 'ok' && knowledge.passages.length ? {
+        approvedPlaybookPassages: knowledge.passages.slice(0, 2).map(({ playbookId, section, excerpt }) => ({ playbookId, section, excerpt: excerpt.slice(0, 280) })),
+      } : {}),
       ...(consumed.length ? { earlierProvisionalSignals: consumed.map(({ evidenceIds, receivingAgent }) => ({ evidenceIds, receivingAgent })) } : {}),
     }, options, options.investigatorModel ?? options.model,
   ) : null;
@@ -361,7 +392,7 @@ export async function investigateCollectively(
       basis: investigator?.result ? 'investigator_model' : 'deterministic_policy',
     },
     context: specialistContexts.find((item) => item.pack === 'confirmed')?.context ?? null,
-    agent: investigator, team, reuse, rejectedMemories, specialistContexts,
+    agent: investigator, team, reuse, rejectedMemories, specialistContexts, ...(knowledge ? { knowledge } : {}),
     ...(options.advanced ? { provisionalSignals: consumed, provisionalContextError } : {}),
     rationale: reuse
       ? 'The Transaction specialist retrieved an active verified fingerprint from Meko and matched its conditions. The behaviour review was skipped. Deterministic policy remains in force.'

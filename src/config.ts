@@ -15,6 +15,9 @@ export const configSchema = z.object({
   INVESTIGATION_TEAM: z.enum(['single', 'collective']).default('collective'),
   MEKO_AUTO_PUBLISH: z.enum(['on', 'off']).default('on'),
   INVESTIGATION_PROFILE: z.enum(['extended', 'legacy']).default('extended'),
+  MEMORY_POLICY: z.enum(['off', 'shadow', 'enforce']).default('off'),
+  // local is an in-process stand-in for demos without Meko keys. It is not hosted Meko.
+  MEMORY_STORE: z.enum(['meko', 'local']).default('meko'),
   MEKO_TIMEOUT_MS: z.coerce.number().int().min(100).max(15_000).default(12_000),
   LLM_PROVIDER: z.enum(['none', 'gemini', 'groq', 'ollama']).default('none'),
   GEMINI_API_KEY: secret,
@@ -29,6 +32,9 @@ export const configSchema = z.object({
 }).superRefine((env, ctx) => {
   if (env.MEKO_DATAPACK_ID && env.MEKO_DATAPACK_ID.toLowerCase() === env.MEKO_RISK_SIGNALS_DATAPACK_ID?.toLowerCase()) {
     ctx.addIssue({ code: 'custom', path: ['MEKO_RISK_SIGNALS_DATAPACK_ID'], message: 'Use a separate datapack' });
+  }
+  if (env.MEMORY_STORE === 'local' && env.INVESTIGATION_MODE === 'meko') {
+    ctx.addIssue({ code: 'custom', path: ['MEMORY_STORE'], message: 'Meko mode needs the hosted store' });
   }
   if (env.RISK_CHALLENGE_THRESHOLD >= env.RISK_BLOCK_THRESHOLD) {
     ctx.addIssue({ code: 'custom', path: ['RISK_BLOCK_THRESHOLD'], message: 'Must exceed the challenge threshold' });

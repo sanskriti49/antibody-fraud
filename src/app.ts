@@ -1,11 +1,16 @@
+import { existsSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
 import express from 'express';
 import type pg from 'pg';
 import { z } from 'zod';
 import { CaseService, DuplicateEventConflict } from './cases.js';
 import { FeedbackError, feedbackSchema, fingerprintRevocationSchema, type LearningService } from './learning.js';
 import { eventSchema } from './events.js';
+import { createWorkspaceRouter, type WorkspaceInfo } from './workspace.js';
 
-export function createApp(pool: pg.Pool, cases: CaseService, learning?: LearningService) {
+const webBuild = fileURLToPath(new URL('../web/dist/', import.meta.url));
+
+export function createApp(pool: pg.Pool, cases: CaseService, learning?: LearningService, workspace?: WorkspaceInfo) {
   const app = express();
   app.disable('x-powered-by');
   app.use(express.json({ limit: '16kb' }));
@@ -74,6 +79,15 @@ export function createApp(pool: pg.Pool, cases: CaseService, learning?: Learning
       }
       res.json(await learning.pubs(id.data));
     });
+  }
+
+  if (workspace) {
+    app.use('/api', createWorkspaceRouter(pool, workspace));
+    // The built React workspace, when present. API routes above take precedence.
+    if (existsSync(webBuild)) {
+      app.use(express.static(webBuild, { index: 'index.html' }));
+      app.get(/^\/(?!api\/|health$).*/, (_req, res) => res.sendFile('index.html', { root: webBuild }));
+    }
   }
 
   const onError: express.ErrorRequestHandler = (error, _req, res, _next) => {

@@ -1,0 +1,635 @@
+{
+  "semantics": "Rules mode, 1,999-event temporal tape with opt-in legitimate-recovery hard negatives. Patterns use the local in-process stand-in store with read-back verification, not hosted Meko. Analyst confirms each attack impact case 30 simulated minutes after impact and corrects a pattern once after it changes a legitimate customer action.",
+  "runs": [
+    {
+      "run": "seed 7403",
+      "split": "evaluation",
+      "seed": 7403,
+      "hardNegatives": true,
+      "profile": "extended",
+      "memoryPolicy": "off",
+      "memoryStore": null,
+      "events": 1998,
+      "attacks": 52,
+      "prevented": 38,
+      "preventedBeforeImpact": 38,
+      "preventedByBlock": 0,
+      "executed": 14,
+      "executedTransferHarmMinor": 880000,
+      "firstEncounter": {
+        "total": 52,
+        "prevented": 38,
+        "preventedBeforeImpact": 38,
+        "preventedByBlock": 0,
+        "executed": 14,
+        "executedHarmMinor": 880000
+      },
+      "repeatEncounter": {
+        "total": 0,
+        "prevented": 0,
+        "preventedBeforeImpact": 0,
+        "preventedByBlock": 0,
+        "executed": 0,
+        "executedHarmMinor": 0
+      },
+      "legitimateStepUpRate": 0.1518324607329843,
+      "blocks": 0,
+      "verifiedPatternMatches": 0,
+      "verifiedPatternMatchesOnLegitimate": 0,
+      "latencyMsP95": 3.599369999999908,
+      "analyst": null,
+      "legitimateRecovery": {
+        "tp": 0,
+        "fp": 36,
+        "tn": 12,
+        "fn": 0,
+        "precision": 0,
+        "recall": null,
+        "f1": 0,
+        "falsePositiveRate": 0.75,
+        "falseNegativeRate": null
+      }
+    },
+    {
+      "run": "seed 7403",
+      "split": "evaluation",
+      "seed": 7403,
+      "hardNegatives": true,
+      "profile": "extended",
+      "memoryPolicy": "enforce",
+      "memoryStore": "local in-process stand-in with read-back verification (not hosted Meko)",
+      "events": 1998,
+      "attacks": 52,
+      "prevented": 51,
+      "preventedBeforeImpact": 43,
+      "preventedByBlock": 23,
+      "executed": 1,
+      "executedTransferHarmMinor": 0,
+      "firstEncounter": {
+        "total": 4,
+        "prevented": 3,
+        "preventedBeforeImpact": 3,
+        "preventedByBlock": 0,
+        "executed": 1,
+        "executedHarmMinor": 0
+      },
+      "repeatEncounter": {
+        "total": 48,
+        "prevented": 48,
+        "preventedBeforeImpact": 40,
+        "preventedByBlock": 23,
+        "executed": 0,
+        "executedHarmMinor": 0
+      },
+      "legitimateStepUpRate": 0.14921465968586387,
+      "blocks": 73,
+      "verifiedPatternMatches": 73,
+      "verifiedPatternMatchesOnLegitimate": 2,
+      "latencyMsP95": 6.028127999998105,
+      "analyst": {
+        "confirmations": {
+          "published": 52
+        },
+        "corrections": {
+          "published": 1
+        }
+      },
+      "legitimateRecovery": {
+        "tp": 0,
+        "fp": 37,
+        "tn": 11,
+        "fn": 0,
+        "precision": 0,
+        "recall": null,
+        "f1": 0,
+        "falsePositiveRate": 0.7708333333333334,
+        "falseNegativeRate": null
+      }
+    },
+    {
+      "run": "seed 1",
+      "split": "evaluation",
+      "seed": 1,
+      "hardNegatives": true,
+      "profile": "extended",
+      "memoryPolicy": "off",
+      "memoryStore": null,
+      "events": 1997,
+      "attacks": 52,
+      "prevented": 42,
+      "preventedBeforeImpact": 42,
+      "preventedByBlock": 0,
+      "executed": 10,
+      "executedTransferHarmMinor": 556600,
+      "firstEncounter": {
+        "total": 52,
+        "prevented": 42,
+        "preventedBeforeImpact": 42,
+        "preventedByBlock": 0,
+        "executed": 10,
+        "executedHarmMinor": 556600
+      },
+      "repeatEncounter": {
+        "total": 0,
+        "prevented": 0,
+        "preventedBeforeImpact": 0,
+        "preventedByBlock": 0,
+        "executed": 0,
+        "executedHarmMinor": 0
+      },
+      "legitimateStepUpRate": 0.14511873350923482,
+      "blocks": 0,
+      "verifiedPatternMatches": 0,
+      "verifiedPatternMatchesOnLegitimate": 0,
+      "latencyMsP95": 3.591769999999997,
+      "analyst": null,
+      "legitimateRecovery": {
+        "tp": 0,
+        "fp": 36,
+        "tn": 12,
+        "fn": 0,
+        "precision": 0,
+        "recall": null,
+        "f1": 0,
+        "falsePositiveRate": 0.75,
+        "falseNegativeRate": null
+      }
+    },
+    {
+      "run": "seed 1",
+      "split": "evaluation",
+      "seed": 1,
+      "hardNegatives": true,
+      "profile": "extended",
+      "memoryPolicy": "enforce",
+      "memoryStore": "local in-process stand-in with read-back verification (not hosted Meko)",
+      "events": 1997,
+      "attacks": 52,
+      "prevented": 51,
+      "preventedBeforeImpact": 46,
+      "preventedByBlock": 18,
+      "executed": 1,
+      "executedTransferHarmMinor": 59400,
+      "firstEncounter": {
+        "total": 4,
+        "prevented": 3,
+        "preventedBeforeImpact": 3,
+        "preventedByBlock": 0,
+        "executed": 1,
+        "executedHarmMinor": 59400
+      },
+      "repeatEncounter": {
+        "total": 48,
+        "prevented": 48,
+        "preventedBeforeImpact": 43,
+        "preventedByBlock": 18,
+        "executed": 0,
+        "executedHarmMinor": 0
+      },
+      "legitimateStepUpRate": 0.1424802110817942,
+      "blocks": 73,
+      "verifiedPatternMatches": 73,
+      "verifiedPatternMatchesOnLegitimate": 2,
+      "latencyMsP95": 6.366759000000457,
+      "analyst": {
+        "confirmations": {
+          "published": 52
+        },
+        "corrections": {
+          "published": 1
+        }
+      },
+      "legitimateRecovery": {
+        "tp": 0,
+        "fp": 37,
+        "tn": 11,
+        "fn": 0,
+        "precision": 0,
+        "recall": null,
+        "f1": 0,
+        "falsePositiveRate": 0.7708333333333334,
+        "falseNegativeRate": null
+      }
+    },
+    {
+      "run": "seed 2027",
+      "split": "evaluation",
+      "seed": 2027,
+      "hardNegatives": true,
+      "profile": "extended",
+      "memoryPolicy": "off",
+      "memoryStore": null,
+      "events": 1993,
+      "attacks": 52,
+      "prevented": 44,
+      "preventedBeforeImpact": 44,
+      "preventedByBlock": 0,
+      "executed": 8,
+      "executedTransferHarmMinor": 448200,
+      "firstEncounter": {
+        "total": 52,
+        "prevented": 44,
+        "preventedBeforeImpact": 44,
+        "preventedByBlock": 0,
+        "executed": 8,
+        "executedHarmMinor": 448200
+      },
+      "repeatEncounter": {
+        "total": 0,
+        "prevented": 0,
+        "preventedBeforeImpact": 0,
+        "preventedByBlock": 0,
+        "executed": 0,
+        "executedHarmMinor": 0
+      },
+      "legitimateStepUpRate": 0.14511873350923482,
+      "blocks": 0,
+      "verifiedPatternMatches": 0,
+      "verifiedPatternMatchesOnLegitimate": 0,
+      "latencyMsP95": 3.527976000000308,
+      "analyst": null,
+      "legitimateRecovery": {
+        "tp": 0,
+        "fp": 36,
+        "tn": 12,
+        "fn": 0,
+        "precision": 0,
+        "recall": null,
+        "f1": 0,
+        "falsePositiveRate": 0.75,
+        "falseNegativeRate": null
+      }
+    },
+    {
+      "run": "seed 2027",
+      "split": "evaluation",
+      "seed": 2027,
+      "hardNegatives": true,
+      "profile": "extended",
+      "memoryPolicy": "enforce",
+      "memoryStore": "local in-process stand-in with read-back verification (not hosted Meko)",
+      "events": 1993,
+      "attacks": 52,
+      "prevented": 51,
+      "preventedBeforeImpact": 47,
+      "preventedByBlock": 18,
+      "executed": 1,
+      "executedTransferHarmMinor": 0,
+      "firstEncounter": {
+        "total": 4,
+        "prevented": 3,
+        "preventedBeforeImpact": 3,
+        "preventedByBlock": 0,
+        "executed": 1,
+        "executedHarmMinor": 0
+      },
+      "repeatEncounter": {
+        "total": 48,
+        "prevented": 48,
+        "preventedBeforeImpact": 44,
+        "preventedByBlock": 18,
+        "executed": 0,
+        "executedHarmMinor": 0
+      },
+      "legitimateStepUpRate": 0.1424802110817942,
+      "blocks": 73,
+      "verifiedPatternMatches": 73,
+      "verifiedPatternMatchesOnLegitimate": 2,
+      "latencyMsP95": 5.325003999998444,
+      "analyst": {
+        "confirmations": {
+          "published": 52
+        },
+        "corrections": {
+          "published": 1
+        }
+      },
+      "legitimateRecovery": {
+        "tp": 0,
+        "fp": 37,
+        "tn": 11,
+        "fn": 0,
+        "precision": 0,
+        "recall": null,
+        "f1": 0,
+        "falsePositiveRate": 0.7708333333333334,
+        "falseNegativeRate": null
+      }
+    },
+    {
+      "run": "seed 90210",
+      "split": "evaluation",
+      "seed": 90210,
+      "hardNegatives": true,
+      "profile": "extended",
+      "memoryPolicy": "off",
+      "memoryStore": null,
+      "events": 1998,
+      "attacks": 52,
+      "prevented": 45,
+      "preventedBeforeImpact": 45,
+      "preventedByBlock": 0,
+      "executed": 7,
+      "executedTransferHarmMinor": 485000,
+      "firstEncounter": {
+        "total": 52,
+        "prevented": 45,
+        "preventedBeforeImpact": 45,
+        "preventedByBlock": 0,
+        "executed": 7,
+        "executedHarmMinor": 485000
+      },
+      "repeatEncounter": {
+        "total": 0,
+        "prevented": 0,
+        "preventedBeforeImpact": 0,
+        "preventedByBlock": 0,
+        "executed": 0,
+        "executedHarmMinor": 0
+      },
+      "legitimateStepUpRate": 0.14960629921259844,
+      "blocks": 0,
+      "verifiedPatternMatches": 0,
+      "verifiedPatternMatchesOnLegitimate": 0,
+      "latencyMsP95": 3.889114999999947,
+      "analyst": null,
+      "legitimateRecovery": {
+        "tp": 0,
+        "fp": 36,
+        "tn": 12,
+        "fn": 0,
+        "precision": 0,
+        "recall": null,
+        "f1": 0,
+        "falsePositiveRate": 0.75,
+        "falseNegativeRate": null
+      }
+    },
+    {
+      "run": "seed 90210",
+      "split": "evaluation",
+      "seed": 90210,
+      "hardNegatives": true,
+      "profile": "extended",
+      "memoryPolicy": "enforce",
+      "memoryStore": "local in-process stand-in with read-back verification (not hosted Meko)",
+      "events": 1998,
+      "attacks": 52,
+      "prevented": 52,
+      "preventedBeforeImpact": 47,
+      "preventedByBlock": 18,
+      "executed": 0,
+      "executedTransferHarmMinor": 0,
+      "firstEncounter": {
+        "total": 4,
+        "prevented": 4,
+        "preventedBeforeImpact": 4,
+        "preventedByBlock": 0,
+        "executed": 0,
+        "executedHarmMinor": 0
+      },
+      "repeatEncounter": {
+        "total": 48,
+        "prevented": 48,
+        "preventedBeforeImpact": 43,
+        "preventedByBlock": 18,
+        "executed": 0,
+        "executedHarmMinor": 0
+      },
+      "legitimateStepUpRate": 0.14698162729658792,
+      "blocks": 75,
+      "verifiedPatternMatches": 75,
+      "verifiedPatternMatchesOnLegitimate": 2,
+      "latencyMsP95": 5.889477999999144,
+      "analyst": {
+        "confirmations": {
+          "published": 52
+        },
+        "corrections": {
+          "published": 1
+        }
+      },
+      "legitimateRecovery": {
+        "tp": 0,
+        "fp": 37,
+        "tn": 11,
+        "fn": 0,
+        "precision": 0,
+        "recall": null,
+        "f1": 0,
+        "falsePositiveRate": 0.7708333333333334,
+        "falseNegativeRate": null
+      }
+    },
+    {
+      "run": "development split, seed 7403",
+      "split": "development",
+      "seed": 7403,
+      "hardNegatives": true,
+      "profile": "extended",
+      "memoryPolicy": "off",
+      "memoryStore": null,
+      "events": 1990,
+      "attacks": 52,
+      "prevented": 42,
+      "preventedBeforeImpact": 42,
+      "preventedByBlock": 0,
+      "executed": 10,
+      "executedTransferHarmMinor": 467000,
+      "firstEncounter": {
+        "total": 52,
+        "prevented": 42,
+        "preventedBeforeImpact": 42,
+        "preventedByBlock": 0,
+        "executed": 10,
+        "executedHarmMinor": 467000
+      },
+      "repeatEncounter": {
+        "total": 0,
+        "prevented": 0,
+        "preventedBeforeImpact": 0,
+        "preventedByBlock": 0,
+        "executed": 0,
+        "executedHarmMinor": 0
+      },
+      "legitimateStepUpRate": 0.14511873350923482,
+      "blocks": 0,
+      "verifiedPatternMatches": 0,
+      "verifiedPatternMatchesOnLegitimate": 0,
+      "latencyMsP95": 3.3375340000002325,
+      "analyst": null,
+      "legitimateRecovery": {
+        "tp": 0,
+        "fp": 36,
+        "tn": 12,
+        "fn": 0,
+        "precision": 0,
+        "recall": null,
+        "f1": 0,
+        "falsePositiveRate": 0.75,
+        "falseNegativeRate": null
+      }
+    },
+    {
+      "run": "development split, seed 7403",
+      "split": "development",
+      "seed": 7403,
+      "hardNegatives": true,
+      "profile": "extended",
+      "memoryPolicy": "enforce",
+      "memoryStore": "local in-process stand-in with read-back verification (not hosted Meko)",
+      "events": 1990,
+      "attacks": 52,
+      "prevented": 51,
+      "preventedBeforeImpact": 48,
+      "preventedByBlock": 17,
+      "executed": 1,
+      "executedTransferHarmMinor": 64600,
+      "firstEncounter": {
+        "total": 4,
+        "prevented": 3,
+        "preventedBeforeImpact": 3,
+        "preventedByBlock": 0,
+        "executed": 1,
+        "executedHarmMinor": 64600
+      },
+      "repeatEncounter": {
+        "total": 48,
+        "prevented": 48,
+        "preventedBeforeImpact": 45,
+        "preventedByBlock": 17,
+        "executed": 0,
+        "executedHarmMinor": 0
+      },
+      "legitimateStepUpRate": 0.1424802110817942,
+      "blocks": 75,
+      "verifiedPatternMatches": 75,
+      "verifiedPatternMatchesOnLegitimate": 2,
+      "latencyMsP95": 5.94799200000125,
+      "analyst": {
+        "confirmations": {
+          "published": 52
+        },
+        "corrections": {
+          "published": 1
+        }
+      },
+      "legitimateRecovery": {
+        "tp": 0,
+        "fp": 37,
+        "tn": 11,
+        "fn": 0,
+        "precision": 0,
+        "recall": null,
+        "f1": 0,
+        "falsePositiveRate": 0.7708333333333334,
+        "falseNegativeRate": null
+      }
+    },
+    {
+      "run": "legacy profile, seed 7403",
+      "split": "evaluation",
+      "seed": 7403,
+      "hardNegatives": true,
+      "profile": "legacy",
+      "memoryPolicy": "off",
+      "memoryStore": null,
+      "events": 1998,
+      "attacks": 52,
+      "prevented": 38,
+      "preventedBeforeImpact": 30,
+      "preventedByBlock": 0,
+      "executed": 14,
+      "executedTransferHarmMinor": 880000,
+      "firstEncounter": {
+        "total": 52,
+        "prevented": 38,
+        "preventedBeforeImpact": 30,
+        "preventedByBlock": 0,
+        "executed": 14,
+        "executedHarmMinor": 880000
+      },
+      "repeatEncounter": {
+        "total": 0,
+        "prevented": 0,
+        "preventedBeforeImpact": 0,
+        "preventedByBlock": 0,
+        "executed": 0,
+        "executedHarmMinor": 0
+      },
+      "legitimateStepUpRate": 0.08638743455497382,
+      "blocks": 0,
+      "verifiedPatternMatches": 0,
+      "verifiedPatternMatchesOnLegitimate": 0,
+      "latencyMsP95": 3.819926999999552,
+      "analyst": null,
+      "legitimateRecovery": {
+        "tp": 0,
+        "fp": 24,
+        "tn": 24,
+        "fn": 0,
+        "precision": 0,
+        "recall": null,
+        "f1": 0,
+        "falsePositiveRate": 0.5,
+        "falseNegativeRate": null
+      }
+    },
+    {
+      "run": "legacy profile, seed 7403",
+      "split": "evaluation",
+      "seed": 7403,
+      "hardNegatives": true,
+      "profile": "legacy",
+      "memoryPolicy": "enforce",
+      "memoryStore": "local in-process stand-in with read-back verification (not hosted Meko)",
+      "events": 1998,
+      "attacks": 52,
+      "prevented": 51,
+      "preventedBeforeImpact": 35,
+      "preventedByBlock": 29,
+      "executed": 1,
+      "executedTransferHarmMinor": 0,
+      "firstEncounter": {
+        "total": 4,
+        "prevented": 3,
+        "preventedBeforeImpact": 2,
+        "preventedByBlock": 0,
+        "executed": 1,
+        "executedHarmMinor": 0
+      },
+      "repeatEncounter": {
+        "total": 48,
+        "prevented": 48,
+        "preventedBeforeImpact": 33,
+        "preventedByBlock": 29,
+        "executed": 0,
+        "executedHarmMinor": 0
+      },
+      "legitimateStepUpRate": 0.08638743455497382,
+      "blocks": 73,
+      "verifiedPatternMatches": 73,
+      "verifiedPatternMatchesOnLegitimate": 2,
+      "latencyMsP95": 5.334441000000879,
+      "analyst": {
+        "confirmations": {
+          "published": 52
+        },
+        "corrections": {
+          "published": 1
+        }
+      },
+      "legitimateRecovery": {
+        "tp": 0,
+        "fp": 26,
+        "tn": 22,
+        "fn": 0,
+        "precision": 0,
+        "recall": null,
+        "f1": 0,
+        "falsePositiveRate": 0.5416666666666666,
+        "falseNegativeRate": null
+      }
+    }
+  ]
+}

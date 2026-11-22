@@ -98,3 +98,22 @@ describe('effect ledger for simulated interventions', () => {
     expect(report.attacks.total).toBe(0);
   });
 });
+describe('hard negatives and encounter reporting', () => {
+  it('adds the opt-in recovery sessions without changing the default tape', () => {
+    const options = { split: 'evaluation', seed: 7403, maxEvents: 400 } as const;
+    expect(generateEarlyCorpus(options).episodes.some((episode) => episode.scenario === 'legitimate-recovery')).toBe(false);
+    const withNegatives = generateEarlyCorpus({ ...options, hardNegatives: true });
+    const recovery = withNegatives.episodes.find((episode) => episode.scenario === 'legitimate-recovery');
+    expect(recovery).toMatchObject({ malicious: false, impactId: null });
+  });
+
+  it('separates first and repeat encounters by when a confirmed pattern became active', () => {
+    const corpus = generateEarlyCorpus({ split: 'evaluation', seed: 7403, maxEvents: 200, scenario: 'takeover' });
+    const starts = corpus.episodes.map((episode) => Math.min(...corpus.events
+      .filter((event) => corpus.labels.get(event.id)?.episodeId === episode.id && corpus.labels.get(event.id)?.phase !== 'warmup')
+      .map((event) => Date.parse(event.timestamp))));
+    const report = evaluateEarlyCorpus(corpus, allowAll(corpus), new Map([['takeover', starts[1]!]]));
+    expect(report.episodes.map((episode) => episode.encounter)).toEqual(starts.map((_, index) => index === 0 ? 'first' : 'repeat'));
+    expect(report.attacks.byEncounter.first.total + report.attacks.byEncounter.repeat.total).toBe(corpus.episodes.length);
+  });
+});

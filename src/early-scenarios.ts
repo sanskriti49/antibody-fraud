@@ -6,7 +6,13 @@ export const earlyScenarios = [
   'credential-stuffing', 'velocity', 'takeover', 'coordinated',
   'ordinary', 'legitimate-travel', 'shared-household', 'shared-office', 'legitimate-burst',
 ] as const;
-export type EarlyScenario = typeof earlyScenarios[number];
+/**
+ * Opt-in legitimate sessions that reproduce an attack's opening steps. The default corpus
+ * excludes them so earlier benchmarks stay reproducible.
+ */
+export const hardNegativeScenarios = ['legitimate-recovery'] as const;
+export const allEarlyScenarios = [...earlyScenarios, ...hardNegativeScenarios] as const;
+export type EarlyScenario = typeof allEarlyScenarios[number];
 export type CorpusSplit = 'development' | 'evaluation';
 
 type Phase = 'warmup' | 'observation' | 'action' | 'impact';
@@ -199,6 +205,16 @@ function createEpisode(split: CorpusSplit, seed: number, ordinal: number, scenar
       emit(7, 'transfer', 'action', { ...itinerary, payeeId: usualPayee, amountMinor: baselineAmount + 240 });
       break;
     }
+    case 'legitimate-recovery':
+      // A customer on a new phone and mobile network types differently, resets a forgotten
+      // password and pays a new contact a modest amount. Until the transfer it looks like a takeover.
+      emit(0, 'login', 'action', { ...newDeviceSession, behaviour: shifted });
+      emit(2, 'password_reset', 'action', { ...newDeviceSession, behaviour: shifted });
+      emit(4, 'payee_added', 'action', { ...newDeviceSession, payeeId: newPayee, behaviour: shifted });
+      emit(9, 'transfer', 'action', {
+        ...newDeviceSession, payeeId: newPayee, amountMinor: baselineAmount + 900, behaviour: shifted,
+      });
+      break;
     case 'ordinary':
       emit(0, 'login', 'action', { behaviour: regular });
       emit(3, 'transfer', 'action', { payeeId: usualPayee, amountMinor: baselineAmount + 300 });
@@ -207,13 +223,16 @@ function createEpisode(split: CorpusSplit, seed: number, ordinal: number, scenar
   return { episode, events, labels };
 }
 
-export function generateEarlyCorpus(options: { split: CorpusSplit; seed: number; maxEvents: number; scenario?: EarlyScenario }): EarlyCorpus {
+export function generateEarlyCorpus(options: {
+  split: CorpusSplit; seed: number; maxEvents: number; scenario?: EarlyScenario; hardNegatives?: boolean;
+}): EarlyCorpus {
   const { split, seed, maxEvents } = options;
   if (!Number.isSafeInteger(seed) || seed < 0 || seed > 999_999_999 ||
       !Number.isSafeInteger(maxEvents) || maxEvents < 20 || maxEvents > 50_000) {
     throw new Error('Use an integer seed from 0 to 999999999 and an event budget from 20 to 50000.');
   }
-  const selection = options.scenario ? [options.scenario] : earlyScenarios;
+  const selection: readonly EarlyScenario[] = options.scenario ? [options.scenario]
+    : options.hardNegatives ? allEarlyScenarios : earlyScenarios;
   const events: FraudEvent[] = [];
   const episodes: Episode[] = [];
   const labels = new Map<string, EventLabel>();
@@ -243,7 +262,14 @@ export type EvaluationDecision = {
   rankedSearches?: number;
   rankedHits?: number;
   rejectedCandidates?: number;
+  /** A verified session pattern matched this event (shadow or enforce). */
+  patternMatched?: boolean;
+  /** The verified-pattern policy changed this event's action. */
+  patternApplied?: boolean;
 };
+
+/** Simulated time from which an analyst-confirmed pattern of each attack scenario was active. */
+export type KnowledgeTimeline = ReadonlyMap<EarlyScenario, number>;
 
 const emptyConfusion = () => ({ tp: 0, fp: 0, tn: 0, fn: 0 });
 type Confusion = ReturnType<typeof emptyConfusion>;
@@ -271,9 +297,11 @@ function metrics(counts: Confusion) {
   };
 }
 
-export function evaluateEarlyCorpus(corpus: EarlyCorpus, decisions: ReadonlyMap<string, EvaluationDecision>) {
+export function evaluateEarlyCorpus(
+  corpus: EarlyCorpus, decisions: ReadonlyMap<string, EvaluationDecision>, knowledge: KnowledgeTimeline = new Map(),
+) {
   const episodes = new Map(corpus.episodes.map((episode) => [episode.id, {
-    ...episode, counts: emptyConfusion(), step: 0,
+    ...episode, counts: emptyConfusion(), step: 0, startTime: null as number | null,
     firstAlert: null as { time: number; step: number } | null,
     held: new Map<string, Gate>(), impactExecuted: false,
     impact: null as { time: number; step: number } | null,
@@ -297,6 +325,9 @@ export function evaluateEarlyCorpus(corpus: EarlyCorpus, decisions: ReadonlyMap<
   let rankedSearches = 0;
   let rankedHits = 0;
   let rejectedCandidates = 0;
+  let patternMatches = 0;
+  let patternMatchesOnLegitimate = 0;
+  let patternActionChanges = 0;
 
   for (const event of corpus.events) {
     const decision = decisions.get(event.id);
@@ -319,6 +350,7 @@ export function evaluateEarlyCorpus(corpus: EarlyCorpus, decisions: ReadonlyMap<
       continue;
     }
     episode.step++;
+    episode.startTime ??= Date.parse(event.timestamp);
     if (label.phase === 'observation') {
       observedFailedAuth++;
       continue;
@@ -326,6 +358,11 @@ export function evaluateEarlyCorpus(corpus: EarlyCorpus, decisions: ReadonlyMap<
 
     const alert = decision.action !== 'ALLOW';
     actions[decision.action]++;
+    if (decision.patternMatched) {
+      patternMatches++;
+      if (!episode.malicious) patternMatchesOnLegitimate++;
+    }
+    if (decision.patternApplied) patternActionChanges++;
     const outcome = episode.malicious ? alert ? 'tp' : 'fn' : alert ? 'fp' : 'tn';
     counts[outcome]++;
     episode.counts[outcome]++;
@@ -376,6 +413,9 @@ export function evaluateEarlyCorpus(corpus: EarlyCorpus, decisions: ReadonlyMap<
       impactOutcome: impact === null ? null : episode.impactExecuted ? 'executed' : 'prevented',
       intervention: episode.impactGate,
       intendedTransferMinor: episode.impactAmountMinor,
+      // Whether a confirmed pattern of this attack type was active before the episode began.
+      encounter: !episode.malicious ? null :
+        (knowledge.get(episode.scenario) ?? Infinity) <= (episode.startTime ?? -Infinity) ? 'repeat' as const : 'first' as const,
       counts: episode.counts,
     };
   });
@@ -383,7 +423,16 @@ export function evaluateEarlyCorpus(corpus: EarlyCorpus, decisions: ReadonlyMap<
   const leadSeconds = attacks.flatMap((episode) => episode.alertLeadSeconds !== null ? [episode.alertLeadSeconds] : []);
   const leadSteps = attacks.flatMap((episode) => episode.alertLeadSteps !== null ? [episode.alertLeadSteps] : []);
   const preventions = attacks.filter((episode) => episode.intervention);
-  const byScenario = Object.fromEntries(earlyScenarios.flatMap((scenario) => {
+  const encounterSummary = (group: typeof attacks) => ({
+    total: group.length,
+    prevented: group.filter((episode) => episode.impactOutcome === 'prevented').length,
+    preventedBeforeImpact: group.filter((episode) => episode.intervention?.stage === 'before_impact').length,
+    preventedByBlock: group.filter((episode) => episode.intervention?.type === 'block').length,
+    executed: group.filter((episode) => episode.impactOutcome === 'executed').length,
+    executedHarmMinor: group.filter((episode) => episode.impactOutcome === 'executed')
+      .reduce((sum, episode) => sum + episode.intendedTransferMinor, 0),
+  });
+  const byScenario = Object.fromEntries(allEarlyScenarios.flatMap((scenario) => {
     const rows = episodeReports.filter((episode) => episode.scenario === scenario);
     if (!rows.length) return [];
     const confusion = rows.reduce((sum, row) => {
@@ -430,11 +479,18 @@ export function evaluateEarlyCorpus(corpus: EarlyCorpus, decisions: ReadonlyMap<
       simulatedTransferHarmPreventedMinor: preventions.reduce((sum, episode) => sum + episode.intendedTransferMinor, 0),
       simulatedTransferHarmExecutedMinor: attacks.filter((episode) => episode.impactOutcome === 'executed')
         .reduce((sum, episode) => sum + episode.intendedTransferMinor, 0),
+      byEncounter: {
+        first: encounterSummary(attacks.filter((episode) => episode.encounter === 'first')),
+        repeat: encounterSummary(attacks.filter((episode) => episode.encounter === 'repeat')),
+      },
     },
     telemetry: {
       totalCalls, measuredUsageCalls, inputTokens, outputTokens, latencyMs: percentiles(latency),
       casesWithVerifiedFingerprintReuse: verifiedReuse, casesWithEarlierPublishedObservations: earlierObservations,
       rankedSearches, rankedHits, rejectedCandidates,
+      verifiedPatternMatches: patternMatches,
+      verifiedPatternMatchesOnLegitimate: patternMatchesOnLegitimate,
+      verifiedPatternActionChanges: patternActionChanges,
     },
     episodes: episodeReports,
   };

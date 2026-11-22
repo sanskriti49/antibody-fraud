@@ -336,6 +336,28 @@ export function mekoMemoryGateway(key: string, datapackId: string) {
         return parsed.data.slice(0, 30).map(memoryRecord);
       });
     },
+    /**
+     * Knowledge-base search. Observed live on 22 November 2026 (the docs omit the shape):
+     * { count, results: [{ id, chunk_text, document_id, distance, rank, rerank_score, match_type, metadata_filters }] }.
+     * Chunks start with "Document: <title>" and "Section: <path>" lines. Hits carry no filename.
+     */
+    async knowledgeSearch(query: string, agent: string, signal: AbortSignal, limit = 5) {
+      return withClient(agent, signal, async (call) => {
+        const payload = await call('knowledgebase_search', { query, conversation_id: randomUUID(), limit });
+        const list = Array.isArray(payload?.results) ? payload.results as unknown[] : [];
+        const text = (value: unknown, max = 4000) => typeof value === 'string' ? value.slice(0, max) : null;
+        const number = (value: unknown) => typeof value === 'number' && Number.isFinite(value) ? value : null;
+        const hits = list.slice(0, limit).flatMap((item) => {
+          const row = object.safeParse(item).data;
+          if (!row) return [];
+          return [{
+            documentId: text(row.document_id, 100), text: text(row.chunk_text),
+            score: number(row.rerank_score), rank: number(row.rank), distance: number(row.distance),
+          }];
+        });
+        return { fields: Object.keys(payload ?? {}).sort(), hitFields: Object.keys(object.safeParse(list[0]).data ?? {}).sort(), hits };
+      });
+    },
     async write(text: string, attributedAgent: string, signal: AbortSignal) {
       let sent = false;
       try {

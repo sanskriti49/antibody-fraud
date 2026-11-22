@@ -7,7 +7,10 @@ export function startPublicationWorker(learning: LearningService, onError: () =>
   const loop = (async () => {
     while (!stop.signal.aborted) {
       try {
-        await learning.workOne();
+        // Drain a small batch per tick so analyst feedback becomes usable within seconds.
+        for (let job = 0; job < 10 && !stop.signal.aborted; job++) {
+          if (!await learning.workOne()) break;
+        }
       } catch {
         onError();
       }

@@ -6,6 +6,9 @@ import { extractGraph, type GraphSnapshot } from './graph.js';
 import { extractFeatures, type Features } from './features.js';
 import { investigate, investigateCollectively, type Investigation, type InvestigationOptions } from './investigation.js';
 import { scoreRisk, type Action, type RiskAssessment, type RiskPolicy } from './risk.js';
+import { evaluateVerifiedPatterns, type PatternDecision } from './learning.js';
+import { currentStep, loadSessionSteps, PATTERN_POINTS, sessionRules, type MemoryPolicyMode } from './memory-policy.js';
+import { selectPlaybooks, type PlaybookReference } from './playbooks.js';
 
 type Trace = {
   version: 1;
@@ -32,9 +35,17 @@ type Trace = {
   provisionalSignals?: Investigation['provisionalSignals'];
   provisionalContextError?: Investigation['provisionalContextError'];
   specialistContexts?: Investigation['specialistContexts'];
+  memoryPolicy?: MemoryPolicyTrace;
+  playbooks?: PlaybookReference[];
+  knowledge?: Investigation['knowledge'];
+  playbookError?: 'playbooks_unavailable';
   durationMs: number;
   leaseRecoveries: number;
 };
+type MemoryPolicyTrace = { mode: Exclude<MemoryPolicyMode, 'off'>; durationMs: number } & (
+  | (PatternDecision & { wouldAction: Action | null; applied: boolean })
+  | { error: 'memory_policy_unavailable'; match: null }
+);
 type CaseRow = {
   id: string;
   status: 'pending' | 'decided';
@@ -109,7 +120,34 @@ export class CaseService {
       const featureStarted = performance.now();
       const features = await extractFeatures(db, event);
       const featureExtractionMs = performance.now() - featureStarted;
-      const risk = scoreRisk(event.kind, features, this.policy, Boolean(this.options.advanced && event.sessionId));
+      const earlySession = Boolean(this.options.advanced && event.sessionId);
+      let risk = scoreRisk(event.kind, features, this.policy, earlySession);
+      const memoryMode = this.options.memoryPolicy ?? 'off';
+      let memoryPolicy: MemoryPolicyTrace | undefined;
+      if (memoryMode !== 'off') {
+        const memoryStarted = performance.now();
+        await db.query('SAVEPOINT memory_policy');
+        try {
+          const decision = await evaluateVerifiedPatterns(db, event, risk.evidence);
+          const match = decision.match;
+          const withMemory = match ? scoreRisk(event.kind, features, this.policy, earlySession, {
+            points: PATTERN_POINTS,
+            detail: 'Session repeats ' + match.matchedSteps + ' of ' + match.totalSteps + ' ordered steps of analyst-confirmed pattern v' +
+              match.version + ' (publication ' + match.publicationId + ', origin case ' + match.originCase + ')',
+          }) : null;
+          const applied = memoryMode === 'enforce' && withMemory !== null && withMemory.preliminaryAction !== risk.preliminaryAction;
+          if (memoryMode === 'enforce' && withMemory) risk = withMemory;
+          memoryPolicy = {
+            mode: memoryMode, ...decision, wouldAction: withMemory?.preliminaryAction ?? null, applied,
+            durationMs: performance.now() - memoryStarted,
+          };
+        } catch {
+          await db.query('ROLLBACK TO SAVEPOINT memory_policy');
+          // A local registry failure keeps the ordinary deterministic policy.
+          memoryPolicy = { mode: memoryMode, error: 'memory_policy_unavailable', match: null, durationMs: performance.now() - memoryStarted };
+        }
+        await db.query('RELEASE SAVEPOINT memory_policy');
+      }
       const run = risk.needsInvestigation && this.options.mode !== 'rules';
       let graph: GraphSnapshot | undefined;
       let graphError: Trace['graphError'];
@@ -126,12 +164,31 @@ export class CaseService {
         }
         await db.query('RELEASE SAVEPOINT graph_evidence');
       }
+      // Approved playbooks are read-only context for alerted or investigated events.
+      let playbooks: PlaybookReference[] | undefined;
+      let playbookError: Trace['playbookError'];
+      if (run || risk.preliminaryAction !== 'ALLOW') {
+        await db.query('SAVEPOINT playbook_context');
+        try {
+          const rules = memoryPolicy && 'sessionRules' in memoryPolicy ? memoryPolicy.sessionRules : sessionRules([
+            ...await loadSessionSteps(db, { accountId: event.accountId, occurredAt: event.timestamp, sessionId: event.sessionId, excludeId: event.id }),
+            currentStep(event.kind, risk.evidence),
+          ]);
+          playbooks = await selectPlaybooks(db, [...new Set([...rules, ...risk.evidence.map((item) => item.id)])]);
+        } catch {
+          await db.query('ROLLBACK TO SAVEPOINT playbook_context');
+          playbookError = 'playbooks_unavailable';
+        }
+        await db.query('RELEASE SAVEPOINT playbook_context');
+      }
       const action = run ? null : risk.preliminaryAction;
       const trace: Trace = {
         version: 1, eventId: event.id, eventKind: event.kind, sessionId: event.sessionId,
         path: run ? 'pending' : risk.needsInvestigation ? 'rules_review' : 'fast',
-        features, featureExtractionMs, risk, graph, graphError, action, context: null, agent: null, modelCalls: 0,
+        features, featureExtractionMs, risk, graph, graphError, memoryPolicy, playbooks, playbookError,
+        action, context: null, agent: null, modelCalls: 0,
         rationale: run ? 'Awaiting specialist investigation.' :
+          action === 'BLOCK' && risk.memoryBlock ? 'The session repeats an analyst-confirmed attack pattern from another account. The verified-pattern policy blocks it.' :
           action === 'BLOCK' ? 'Score and hard-block predicate satisfy policy.' :
           action === 'STEP_UP_VERIFICATION' ? 'The score requires step-up verification under rules-only policy.' :
           event.kind === 'login_failed' ? 'Recorded a failed login as an observation without authorizing authentication.' :
@@ -153,7 +210,7 @@ export class CaseService {
     if (!claim.run) return { duplicate: claim.duplicate, case: claim.row };
     const snapshot = claim.row.trace;
     const assessment = collective
-      ? await investigateCollectively(event.id, event.kind, snapshot.features, snapshot.risk, this.options, snapshot.graph)
+      ? await investigateCollectively(event.id, event.kind, snapshot.features, snapshot.risk, this.options, snapshot.graph, snapshot.playbooks)
       : await investigate(event.id, snapshot.features, snapshot.risk, this.options);
     const learning = collective && this.options.mode === 'meko' && this.options.publishProvisional !== false ? this.options.learning : undefined;
     const observations = assessment.team?.filter((agent) => agent.result?.evidence.length) ?? [];

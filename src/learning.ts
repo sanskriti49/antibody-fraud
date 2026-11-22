@@ -8,25 +8,42 @@ import { failureCode } from './integrations/ports.js';
 import { MekoRateLimit, MekoWriteNotSent } from './integrations/meko.js';
 import type { AgentTrace, Investigation } from './investigation.js';
 import type { RiskAssessment } from './risk.js';
+import {
+  compactSteps, currentStep, loadSessionSteps, MIN_MATCHED_STEPS, MIN_MATCHED_POINTS, PATTERN_FRESHNESS_DAYS,
+  matchPattern, sessionRules, stepPoints, type PatternMatch, type PatternStep,
+} from './memory-policy.js';
+import { bindKnowledgeHits } from './playbooks.js';
 
 export const LOGIN_AGENT = 'contextcon-behaviour-login';
 export const GRAPH_AGENT = 'contextcon-graph';
 export const TRANSFER_AGENT = 'contextcon-transactions';
+/** Attribution for patterns an analyst confirmed from deterministic session evidence. */
+export const INVESTIGATOR_AGENT = 'contextcon-investigator';
+const specialists = [LOGIN_AGENT, TRANSFER_AGENT, DEVICE_AGENT, GRAPH_AGENT] as const;
 export const FINGERPRINT_QUERY = 'ContextCon suspicious transfer interaction timing shift recently registered payee unusual amount';
 const signature = ['behaviour_shift', 'fresh_payee', 'amount_spike'] as const;
 const ruleSchema = z.string().regex(/^[a-z][a-z0-9_]{0,63}$/);
+const stepSchema = z.strictObject({
+  kind: z.enum(['login', 'login_failed', 'password_reset', 'payee_added', 'transfer']),
+  rules: z.array(ruleSchema).min(1).max(16),
+});
 const documentSchema = z.strictObject({
   format: z.literal('contextcon-learning-v1'),
   publicationId: z.uuid(),
   kind: z.enum(['observation', 'fingerprint']),
   originCase: z.uuid(),
-  originAgent: z.enum([LOGIN_AGENT, TRANSFER_AGENT, DEVICE_AGENT, GRAPH_AGENT]),
+  originAgent: z.enum([...specialists, INVESTIGATOR_AGENT]),
   feedbackCase: z.uuid().nullable(),
   verification: z.enum(['provisional', 'analyst_confirmed']),
   version: z.int().positive(),
   supersedes: z.uuid().nullable(),
-  evidence: z.array(ruleSchema).min(1).max(12),
+  evidence: z.array(ruleSchema).min(1).max(16),
   required: z.array(ruleSchema).max(12),
+  // Absent on documents written before session patterns existed; those are transfer signatures.
+  pattern: z.enum(['transfer_signature', 'session_sequence']).optional(),
+  steps: z.array(stepSchema).min(2).max(12).optional(),
+  // Rules an analyst correction requires somewhere in the session before the pattern applies.
+  conditions: z.array(ruleSchema).max(12).optional(),
 });
 export type LearningDocument = z.infer<typeof documentSchema>;
 export type Pack = 'risk' | 'confirmed';
@@ -36,11 +53,13 @@ export interface MemoryGateway {
   recent(agentId: string, signal: AbortSignal): Promise<RecordHit[]>;
   read(id: string, agentId: string, signal: AbortSignal): Promise<RecordHit | null>;
   write(text: string, agentId: string, signal: AbortSignal): Promise<string | null>;
+  knowledgeSearch?(query: string, agentId: string, signal: AbortSignal, limit?: number): Promise<{ hits: KnowledgeHit[] }>;
 }
+export type KnowledgeHit = { documentId: string | null; text: string | null; score: number | null; rank?: number | null };
 
 export const feedbackSchema = z.discriminatedUnion('verdict', [
   z.strictObject({ verdict: z.literal('fraud_confirmed') }),
-  z.strictObject({ verdict: z.literal('legitimate_correction'), publicationId: z.uuid(), require: z.literal('recent_reset') }),
+  z.strictObject({ verdict: z.literal('legitimate_correction'), publicationId: z.uuid(), require: ruleSchema }),
 ]);
 export type Feedback = z.infer<typeof feedbackSchema>;
 export const fingerprintRevocationSchema = z.strictObject({
@@ -57,7 +76,17 @@ type Publication = {
 };
 type CaseEvidence = {
   status: string;
-  trace: { risk: RiskAssessment; eventKind: string; team?: Investigation['team']; reuse?: Reuse | null };
+  account_id: string;
+  occurred_at: Date;
+  session_id: string | null;
+  trace: {
+    risk: RiskAssessment; eventKind: PatternStep['kind']; team?: Investigation['team']; reuse?: Reuse | null;
+    memoryPolicy?: { match: { publicationId: string } | null; sessionRules: string[] } | null;
+  };
+};
+export type ActivePattern = {
+  publicationId: string; memoryId: string; originCase: string; version: number;
+  steps: PatternStep[]; conditions: string[];
 };
 export type Reuse = {
   publicationId: string; memoryId: string; originCase: string; originAgent: string;
@@ -109,9 +138,20 @@ export class LearningService {
 
   hasPack(pack: Pack) { return Boolean(this.packs[pack]); }
 
+  /**
+   * Ranked playbook passages from the confirmed pack's knowledge base, bound to approved local
+   * versions. Returns null when the gateway has no knowledge search (the local stand-in).
+   */
+  async knowledgeContext(query: string, agentId: string, limit = 4) {
+    const gateway = this.packs.confirmed;
+    if (!gateway?.knowledgeSearch) return null;
+    const { hits } = await gateway.knowledgeSearch(query, agentId, AbortSignal.timeout(this.timeoutMs), limit);
+    return { hits: hits.length, ...await bindKnowledgeHits(this.pool, hits) };
+  }
+
   async recordObservation(db: pg.PoolClient, caseId: string, agent: AgentTrace | undefined) {
     if (!this.packs.risk || !agent?.result?.evidence.length) return;
-    const originAgent = z.enum([LOGIN_AGENT, TRANSFER_AGENT, DEVICE_AGENT, GRAPH_AGENT]).safeParse(agent.agentId).data;
+    const originAgent = z.enum(specialists).safeParse(agent.agentId).data;
     if (!originAgent) return;
     await enqueue(db, 'risk', {
       format: 'contextcon-learning-v1', publicationId: randomUUID(), kind: 'observation',
@@ -123,42 +163,95 @@ export class LearningService {
   async feedback(caseId: string, request: Feedback) {
     if (!this.packs.confirmed) throw new FeedbackError('confirmed_pack_unconfigured');
     return inTransaction(this.pool, async (db) => {
-      const row = (await db.query<CaseEvidence>('SELECT status, trace FROM cases WHERE id = $1 FOR UPDATE', [caseId])).rows[0];
+      const row = (await db.query<CaseEvidence>(`
+        SELECT c.status, c.trace, e.account_id, e.occurred_at, e.payload->>'sessionId' AS session_id
+        FROM cases c JOIN events e ON e.id = c.id WHERE c.id = $1 FOR UPDATE OF c
+      `, [caseId])).rows[0];
       if (!row || row.status !== 'decided') throw new FeedbackError('decided_case_required');
       const canonical = JSON.stringify(request);
-      const previous = (await db.query<{ same: boolean }>(
-        'SELECT request = $2::jsonb AS same FROM analyst_feedback WHERE case_id = $1', [caseId, canonical],
+      const previous = (await db.query<{ same: boolean; publication_id: string | null }>(
+        'SELECT request = $2::jsonb AS same, publication_id FROM analyst_feedback WHERE case_id = $1', [caseId, canonical],
       )).rows[0];
       if (previous) {
         if (!previous.same) throw new FeedbackError('feedback_conflict');
-        return (await db.query<Publication>('SELECT * FROM memory_publications WHERE case_id = $1 AND kind = $2', [caseId, 'fingerprint'])).rows[0]!;
+        return (await db.query<Publication>(`
+          SELECT * FROM memory_publications WHERE id = $1 OR ($1::uuid IS NULL AND case_id = $2 AND kind = 'fingerprint')
+        `, [previous.publication_id, caseId])).rows[0]!;
       }
-      if (row.trace.eventKind !== 'transfer' || !matches(row.trace.risk, signature)) throw new FeedbackError('case_outside_supported_pattern');
+      const session = [
+        ...await loadSessionSteps(db, {
+          accountId: row.account_id, occurredAt: row.occurred_at.toISOString(), sessionId: row.session_id, excludeId: caseId,
+        }),
+        currentStep(row.trace.eventKind, row.trace.risk.evidence),
+      ];
 
       let document: LearningDocument;
       const publicationId = randomUUID();
       if (request.verdict === 'fraud_confirmed') {
+        const steps = compactSteps(session);
+        const sequence = steps.length >= MIN_MATCHED_STEPS && stepPoints(session) >= MIN_MATCHED_POINTS
+          ? { steps, conditions: [] } : null;
         const origin = row.trace.team?.find((item) => item.agentId === LOGIN_AGENT);
-        if (!origin?.result?.evidenceIds.includes('behaviour_shift')) throw new FeedbackError('verified_specialist_evidence_required');
-        document = {
-          format: 'contextcon-learning-v1', publicationId, kind: 'fingerprint', originCase: caseId,
-          originAgent: LOGIN_AGENT, feedbackCase: caseId, verification: 'analyst_confirmed', version: 1,
-          supersedes: null, evidence: row.trace.risk.evidence.map((item) => item.id), required: [...signature],
+        const signatureCase = row.trace.eventKind === 'transfer' && matches(row.trace.risk, signature) &&
+          origin?.result?.evidenceIds.includes('behaviour_shift');
+        const base = {
+          format: 'contextcon-learning-v1' as const, publicationId, kind: 'fingerprint' as const, originCase: caseId,
+          feedbackCase: caseId, verification: 'analyst_confirmed' as const, version: 1, supersedes: null,
         };
+        if (signatureCase) {
+          // The specialist-verified transfer signature keeps its original meaning for agent reuse.
+          document = {
+            ...base, originAgent: LOGIN_AGENT, evidence: row.trace.risk.evidence.map((item) => item.id), required: [...signature],
+            ...(sequence ? { pattern: 'transfer_signature' as const, ...sequence } : {}),
+          };
+        } else if (sequence) {
+          // A repeat confirmation of known steps corroborates the active pattern rather than
+          // adding a copy, so one correction or revocation governs every identical attack.
+          // Concurrent confirmations of the same steps serialize on this transaction lock.
+          await db.query('SELECT pg_advisory_xact_lock(hashtextextended($1, 2))', [JSON.stringify(sequence.steps)]);
+          const existing = (await db.query<Publication>(`
+            SELECT * FROM memory_publications
+            WHERE pack = 'confirmed' AND kind = 'fingerprint' AND state <> 'failed'
+              AND superseded_at IS NULL AND revoked_at IS NULL
+              AND document->>'pattern' = 'session_sequence' AND document->'steps' = $1::jsonb
+            ORDER BY id LIMIT 1
+          `, [JSON.stringify(sequence.steps)])).rows[0];
+          if (existing) {
+            await db.query('INSERT INTO analyst_feedback (case_id, request, publication_id) VALUES ($1, $2, $3)', [caseId, canonical, existing.id]);
+            return existing;
+          }
+          document = {
+            ...base, originAgent: INVESTIGATOR_AGENT, evidence: sessionRules(sequence.steps).slice(0, 16), required: [],
+            pattern: 'session_sequence', ...sequence,
+          };
+        } else {
+          throw new FeedbackError('case_outside_supported_pattern');
+        }
       } else {
         const old = (await db.query<Publication>(`
           SELECT * FROM memory_publications WHERE id = $1 AND pack = 'confirmed'
             AND state = 'published' AND superseded_at IS NULL AND revoked_at IS NULL FOR UPDATE
         `, [request.publicationId])).rows[0];
-        if (!old || row.trace.reuse?.publicationId !== old.id || old.document.originCase === caseId || old.document.required.includes(request.require) ||
-            !matches(row.trace.risk, old.document.required) || matches(row.trace.risk, [request.require]) ||
-            !old.document.evidence.includes(request.require)) throw new FeedbackError('correction_not_supported_by_evidence');
+        const require = request.require;
+        const viaReuse = Boolean(old) && row.trace.reuse?.publicationId === old!.id;
+        const viaPolicy = Boolean(old?.document.steps) && row.trace.memoryPolicy?.match?.publicationId === old!.id;
+        // A correction names a rule the original attack had and this legitimate case lacked.
+        const supported = old && old.document.originCase !== caseId && old.document.evidence.includes(require) && (
+          viaReuse ? !old.document.required.includes(require) && matches(row.trace.risk, old.document.required) &&
+            !matches(row.trace.risk, [require]) :
+          viaPolicy ? !(old.document.conditions ?? []).includes(require) &&
+            !(row.trace.memoryPolicy?.sessionRules ?? sessionRules(session)).includes(require) :
+          false);
+        if (!old || !supported) throw new FeedbackError('correction_not_supported_by_evidence');
         await db.query('UPDATE memory_publications SET superseded_at = clock_timestamp() WHERE id = $1', [old.id]);
         document = { ...old.document, publicationId, feedbackCase: caseId, supersedes: old.id,
-          version: old.document.version + 1, required: [...old.document.required, request.require] };
+          version: old.document.version + 1,
+          required: old.document.pattern === 'session_sequence' ? old.document.required : [...old.document.required, require],
+          ...(old.document.steps ? { conditions: [...(old.document.conditions ?? []), require] } : {}),
+        };
       }
-      await db.query('INSERT INTO analyst_feedback (case_id, request) VALUES ($1, $2)', [caseId, canonical]);
       await enqueue(db, 'confirmed', document, caseId);
+      await db.query('INSERT INTO analyst_feedback (case_id, request, publication_id) VALUES ($1, $2, $3)', [caseId, canonical, publicationId]);
       return (await db.query<Publication>('SELECT * FROM memory_publications WHERE id = $1', [publicationId])).rows[0]!;
     });
   }
@@ -237,6 +330,8 @@ export class LearningService {
     for (const hit of result.records) {
       const document = decode(hit.text);
       if (!hit.id || !document || document.kind !== 'fingerprint' || document.verification !== 'analyst_confirmed') continue;
+      // Session patterns drive the deterministic policy; only transfer signatures let an agent skip review.
+      if (document.pattern === 'session_sequence') continue;
       const published = (await this.pool.query<{ active: boolean; revoked: boolean; exact: boolean; fresh: boolean; distinct_account: boolean; known_at_event: boolean }>(`
         SELECT m.superseded_at IS NULL AS active, m.revoked_at IS NOT NULL AS revoked, document = $3::jsonb AS exact,
           m.verified_at >= clock_timestamp() - interval '30 days' AS fresh,
@@ -344,4 +439,65 @@ export class LearningService {
     }
     return updated.rows[0] ?? null;
   }
+}
+
+/**
+ * Analyst-confirmed session patterns that the publication worker has read back from the
+ * confirmed datapack, as known before this event. The table is the local verified mirror
+ * of that datapack, so the deterministic path needs no network call per event.
+ */
+export async function activePatterns(db: Pick<pg.PoolClient, 'query'>, accountId: string, occurredAt: string): Promise<ActivePattern[]> {
+  const rows = (await db.query<{ id: string; remote_id: string; document: unknown }>(`
+    SELECT m.id, m.remote_id, m.document
+    FROM memory_publications m JOIN events source ON source.id = (m.document->>'originCase')::uuid
+    WHERE m.pack = 'confirmed' AND m.kind = 'fingerprint' AND m.state = 'published'
+      AND m.superseded_at IS NULL AND m.revoked_at IS NULL AND m.document ? 'steps'
+      AND m.verified_at <= clock_timestamp() AND m.verified_at >= clock_timestamp() - make_interval(days => $3)
+      AND source.account_id <> $1 AND source.occurred_at < $2::timestamptz
+    ORDER BY m.verified_at DESC, m.id LIMIT 200
+  `, [accountId, occurredAt, PATTERN_FRESHNESS_DAYS])).rows;
+  return rows.flatMap((row) => {
+    const document = documentSchema.safeParse(row.document).data;
+    if (!document?.steps || document.publicationId !== row.id || document.verification !== 'analyst_confirmed') return [];
+    return [{
+      publicationId: row.id, memoryId: row.remote_id, originCase: document.originCase, version: document.version,
+      steps: document.steps, conditions: document.conditions ?? [],
+    }];
+  });
+}
+
+export type PatternDecision = {
+  candidates: number;
+  conditionsUnmet: number;
+  sessionRules: string[];
+  match: (PatternMatch & Omit<ActivePattern, 'steps' | 'conditions'>) | null;
+};
+
+/** Compare the current session with every active verified pattern. Deterministic and local. */
+export async function evaluateVerifiedPatterns(
+  db: Pick<pg.PoolClient, 'query'>, event: { id: string; kind: PatternStep['kind']; accountId: string; timestamp: string; sessionId?: string },
+  evidence: RiskAssessment['evidence'],
+): Promise<PatternDecision> {
+  const patterns = await activePatterns(db, event.accountId, event.timestamp);
+  if (!patterns.length) return { candidates: 0, conditionsUnmet: 0, sessionRules: [], match: null };
+  const session = [
+    ...await loadSessionSteps(db, { accountId: event.accountId, occurredAt: event.timestamp, sessionId: event.sessionId, excludeId: event.id }),
+    currentStep(event.kind, evidence),
+  ];
+  const rules = sessionRules(session);
+  let conditionsUnmet = 0;
+  let best: PatternDecision['match'] = null;
+  for (const pattern of patterns) {
+    if (!pattern.conditions.every((id) => rules.includes(id))) {
+      conditionsUnmet++;
+      continue;
+    }
+    const found = matchPattern(pattern.steps, session);
+    if (!found) continue;
+    if (!best || found.matchedSteps > best.matchedSteps || (found.matchedSteps === best.matchedSteps && found.points > best.points)) {
+      const { steps: _steps, conditions: _conditions, ...source } = pattern;
+      best = { ...source, ...found };
+    }
+  }
+  return { candidates: patterns.length, conditionsUnmet, sessionRules: rules, match: best };
 }
